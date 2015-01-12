@@ -1,0 +1,16 @@
+{
+    "name": "b3nl/phingShopware",
+    "version": "0.9.0",
+    "description": "Adds shopware tasks to your phing-build.",
+    "license": "GPL v3",
+    "authors": [
+        {
+            "name": "blange",
+            "email": "code@wbl-konzept.de"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+        "php": ">=5.4.0"
+    }
+}
