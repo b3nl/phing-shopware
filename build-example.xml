@@ -1,0 +1,24 @@
+<?xml version="1.0" ?>
+
+<project name="test" basedir="." default="echoPossibleTargets">
+    <includepath classpath="src" />
+    <property name="SW_PATH" value="./shopware" override="true" />
+    <taskdef name="installSWDatabase" classname="InstallSWDatabaseTask" />
+    <taskdef name="writeSWConfig" classname="writeSWConfigTask" />
+
+    <target name="installSWDatabase" depends="writeSWConfig">
+        <installSWDatabase />
+    </target>
+
+    <target name="echoPossibleTargets">
+        <echo>Please use one of this targets: prepareLocalEnv</echo>
+    </target>
+
+    <target name="prepareLocalEnv" depends="installSWDatabase">
+
+    </target>
+
+    <target name="writeSWConfig">
+        <writeSWConfig host="localhost" name="test" password="@Server1" port="3306" user="root" />
+    </target>
+</project>
