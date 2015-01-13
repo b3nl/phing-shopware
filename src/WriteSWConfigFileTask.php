@@ -16,7 +16,7 @@
      */
     class WriteSWConfigFileTask extends AbstractSWTask
     {
-        use ShopwareDatabaseInstallTrait;
+        use SWDatabaseInstallTrait;
 
         /**
          * Taskname for logger

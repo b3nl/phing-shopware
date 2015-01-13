@@ -7,7 +7,8 @@
      */
 
     require_once 'phing/Task.php';
-    require_once __DIR__ . DIRECTORY_SEPARATOR . 'ShopwareDatabaseInstallTrait.php';
+    require_once __DIR__ . DIRECTORY_SEPARATOR . 'SWDatabaseInstallTrait.php';
+    require_once __DIR__ . DIRECTORY_SEPARATOR . 'SWDatabaseWriterTrait.php';
 
     /**
      * Basic Shopware-Task.

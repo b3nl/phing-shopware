@@ -16,7 +16,9 @@ require_once __DIR__ . DIRECTORY_SEPARATOR . 'AbstractSWTask.php';
      */
     class InstallSWDatabaseTask extends AbstractSWTask
     {
-        use ShopwareDatabaseInstallTrait;
+        use SWDatabaseInstallTrait, SWDatabaseWriterTrait {
+            SWDatabaseInstallTrait::getSWInstallApp insteadof SWDatabaseWriterTrait;
+        }
 
         /**
          * Taskname for logger
@@ -97,28 +99,7 @@ EOD
          */
         public function main()
         {
-            $install = $this->getSWInstallApp();
-
-            $install->setDatabase();
-            $db = $install->getDatabase();
-
-            if ($error = $install->getError()) {
-                throw new BuildException('database error: ' . $error);
-            } // if
-
-            $dump = new \Shopware\Recovery\Common\Dump($this->collectSWQueriesInBuffer());
-
-            foreach ($dump as $query) {
-                if ($query) {
-                    set_time_limit(0);
-
-                    try {
-                        $db->query($query);
-                    } catch (PDOException $exception) {
-                        throw new BuildException($exception->getMessage(), $e->getCode());
-                    } // catch
-                } // if
-            } // foreach
+            $this->writeToSWDatabase($this->collectSWQueriesInBuffer());
 
             return null;
         } // function

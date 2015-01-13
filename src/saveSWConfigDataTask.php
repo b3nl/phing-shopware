@@ -16,7 +16,7 @@
      */
     class SaveSWConfigDataTask extends AbstractSWTask
     {
-        use ShopwareDatabaseInstallTrait;
+        use SWDatabaseInstallTrait;
 
         /**
          * The admin language.

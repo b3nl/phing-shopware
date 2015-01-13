@@ -1,6 +1,6 @@
 <?php
     /**
-     * ./src/ShopwareDatabaseInstallTrait.php
+     * ./src/SWDatabaseInstallTrait.php
      * @author blange <code@wbl-konzept.de>
      * @package phingShopware
      * @version $id$
@@ -12,7 +12,7 @@
      * @package phingShopware
      * @version $id$
      */
-    trait ShopwareDatabaseInstallTrait
+    trait SWDatabaseInstallTrait
     {
         /**
          * The SW Component to install the system.
