@@ -2,23 +2,31 @@
 
 <project name="test" basedir="." default="echoPossibleTargets">
     <includepath classpath="src" />
-    <property name="SW_PATH" value="./shopware" override="true" />
-    <taskdef name="installSWDatabase" classname="InstallSWDatabaseTask" />
-    <taskdef name="writeSWConfig" classname="writeSWConfigTask" />
 
-    <target name="installSWDatabase" depends="writeSWConfig">
-        <installSWDatabase />
-    </target>
+    <property name="database_host" value="your database host" />
+    <property name="database_name" value="your database name" />
+    <property name="database_password" value="your database password" />
+    <property name="database_port" value="your database port" />
+    <property name="database_user" value="rooyour database user" />
+
+    <property name="language" value="your shop language (de|en)" />
+    <property name="SW_PATH" value="The path to your shopware dir." override="true" />
+
+    <taskdef name="installSWDatabase" classname="InstallSWDatabaseTask" />
+    <taskdef name="writeSWConfigFile" classname="writeSWConfigFileTask" />
+    <taskdef name="saveSWConfigData" classname="saveSWConfigDataTask" />
 
     <target name="echoPossibleTargets">
         <echo>Please use one of this targets: prepareLocalEnv</echo>
     </target>
 
-    <target name="prepareLocalEnv" depends="installSWDatabase">
-
-    </target>
-
-    <target name="writeSWConfig">
-        <writeSWConfig host="localhost" name="test" password="@Server1" port="3306" user="root" />
+    <target name="prepareLocalEnv">
+        <writeSWConfigFile />
+        <installSWDatabase />
+        <saveSWConfigData
+                adminLanguage="lang" adminName="your backend name" adminEmail="your admin mail"
+                adminPassword="your admin password" adminUser="your admin user name"
+                configMail="the mail of the shop" shopCurrency="the default shop currency"
+                shopLanguage="the default shop language" shopHost="your shop host" />
     </target>
 </project>
