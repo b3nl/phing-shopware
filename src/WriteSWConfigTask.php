@@ -53,6 +53,12 @@ class WriteSWConfigTask extends AbstractSWTask
     protected $dbUser = '';
 
     /**
+     * The SW Component to install the system.
+     * @var null|Shopware\Recovery\Install\Database
+     */
+    protected $installSWApp = null;
+
+    /**
      * Taskname for logger
      * @var string
      */
@@ -65,6 +71,29 @@ class WriteSWConfigTask extends AbstractSWTask
     protected function getHost()
     {
         return $this->dbHost;
+    } // function
+
+    /**
+     * Returns the class to install shopware.
+     * @return null|\Shopware\Recovery\Install\Database
+     */
+    protected function getSWInstallApp()
+    {
+        if ($this->installSWApp) {
+            $this->installSWApp = new Shopware\Recovery\Install\Database(
+                array(
+                    "user" => $this->getUser(),
+                    "password" => $this->getPassword(),
+                    "host" => $this->getHost(),
+                    "port" => $this->getPort(),
+                    "socket" => $this->getSocket(),
+                    "database" => $this->getName(),
+                ),
+                $this->getProject()->getProperty('SW_PATH')
+            );
+        } // if
+
+        return $this->installSWApp;
     } // function
 
     /**
@@ -114,20 +143,11 @@ class WriteSWConfigTask extends AbstractSWTask
 
     /**
      * The main entry point method.
+     * @return void
      */
     public function main()
     {
-        $oInstall = new Shopware\Recovery\Install\Database(
-            array(
-                "user"     => $this->getUser(),
-                "password" => $this->getPassword(),
-                "host"     => $this->getHost(),
-                "port"     => $this->getPort(),
-                "socket"   => $this->getSocket(),
-                "database" => $this->getName(),
-            ),
-            $this->getProject()->getProperty('SW_PATH')
-        );
+        $oInstall = $this->getSWInstallApp();
 
         $oInstall->setDatabase();
 
@@ -136,6 +156,7 @@ class WriteSWConfigTask extends AbstractSWTask
         } // if
 
         $oInstall->writeConfig();
+
         if ($sError = $oInstall->getError()) {
             throw new BuildException($sError);
         } // if
