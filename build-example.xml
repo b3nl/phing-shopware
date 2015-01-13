@@ -13,6 +13,7 @@
     <property name="SW_PATH" value="The path to your shopware dir." override="true" />
 
     <taskdef name="installSWDatabase" classname="InstallSWDatabaseTask" />
+    <taskdef name="installSWDemoData" classname="InstallSWDemoDataTask" />
     <taskdef name="writeSWConfigFile" classname="writeSWConfigFileTask" />
     <taskdef name="saveSWConfigData" classname="saveSWConfigDataTask" />
 
