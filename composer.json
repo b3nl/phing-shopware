@@ -1,6 +1,6 @@
 {
-    "name": "b3nl/phingShopware",
-    "version": "0.9.0",
+    "name": "b3nl/phing-shopware",
+    "version": "1.0.0",
     "description": "Adds shopware tasks to your phing-build.",
     "license": "GPL v3",
     "authors": [
