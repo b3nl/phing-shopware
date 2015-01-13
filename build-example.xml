@@ -3,6 +3,7 @@
 <project name="test" basedir="." default="echoPossibleTargets">
     <includepath classpath="src" />
 
+    <!-- Needed globally in some tasks! -->
     <property name="database_host" value="your database host" />
     <property name="database_name" value="your database name" />
     <property name="database_password" value="your database password" />
