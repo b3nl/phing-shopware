@@ -17,6 +17,7 @@
     <taskdef name="installSWDemoData" classname="InstallSWDemoDataTask" />
     <taskdef name="writeSWConfigFile" classname="writeSWConfigFileTask" />
     <taskdef name="saveSWConfigData" classname="saveSWConfigDataTask" />
+    <taskdef name="writeToSWDatabase" classname="WriteToSWDatabaseTask" />
 
     <target name="echoPossibleTargets">
         <echo>Please use one of this targets: prepareLocalEnv</echo>

@@ -14,10 +14,13 @@
      */
     trait SWDatabaseWriterTrait
     {
+        use SWDatabaseInstallTrait;
+
         /**
          * Returns the class to install shopware.
          * @param  string $file Filename to the database file.
          * @return null|\Shopware\Recovery\Install\Database
+         * @throws BuildException If there is something wrong.
          */
         public function writeToSWDatabase($file)
         {
