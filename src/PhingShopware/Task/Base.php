@@ -1,14 +1,16 @@
 <?php
     /**
-     * ./src/AbstractSWTask.php
+     * ./src/PhingShopware/Task/Base.php
      * @author blange <code@wbl-konzept.de>
      * @package phingShopware
      * @version $id$
      */
 
+    namespace PhingShopware\Task;
+
     require_once 'phing/Task.php';
-    require_once __DIR__ . DIRECTORY_SEPARATOR . 'SWDatabaseInstallTrait.php';
-    require_once __DIR__ . DIRECTORY_SEPARATOR . 'SWDatabaseWriterTrait.php';
+    require_once realpath(__DIR__ . '/../Helper/DatabaseInstaller.php');
+    require_once realpath(__DIR__ . '/../Helper/DatabaseWriter.php');
 
     /**
      * Basic Shopware-Task.
@@ -16,7 +18,7 @@
      * @package phingShopware
      * @version $id$
      */
-    abstract class AbstractSWTask extends Task
+    abstract class Base extends \Task
     {
         /**
          * Checks if the shopware exists (property SW_PATH like the original shopware constant).
@@ -41,7 +43,7 @@
             } // if
 
             if (!$bReturn) {
-                throw new BuildException('Missing existing Shopware path as Property "SW_PATH".');
+                throw new \BuildException('Missing existing Shopware path as Property "SW_PATH".');
             } // if
 
             return $bReturn;
@@ -49,7 +51,7 @@
 
         /**
          * Includes the install autoloader of the shopware system.
-         * @return AbstractSWTask
+         * @return PhingShopware_Task_Base
          */
         protected function includeSWAutoloader()
         {

@@ -1,12 +1,14 @@
 <?php
     /**
-     * ./src/SaveSWConfigDataTask.php
+     * ./src/PhingShopware/Task/SaveConfigData.php
      * @author blange <code@wbl-konzept.de>
      * @package phingShopware
      * @version $id$
      */
 
-    require_once __DIR__ . DIRECTORY_SEPARATOR . 'AbstractSWTask.php';
+    namespace PhingShopware\Task;
+
+    require_once __DIR__ . DIRECTORY_SEPARATOR . 'Base.php';
 
     /**
      * Writes the shopware config file.
@@ -14,9 +16,9 @@
      * @package phingShopware
      * @version $id$
      */
-    class SaveSWConfigDataTask extends AbstractSWTask
+    class SaveConfigData extends Base
     {
-        use SWDatabaseInstallTrait;
+        use DatabaseInstaller;
 
         /**
          * The admin language.
@@ -191,8 +193,8 @@
                 $config->createAdmin($configData);
                 $config->updateConfig($configData);
                 $config->updateShop($configData);
-            } catch (Exception $exception) {
-                throw new BuildException($exception->getMessage());
+            } catch (\Exception $exception) {
+                throw new \BuildException($exception->getMessage());
             } // catch
         } // function
 

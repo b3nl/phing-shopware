@@ -1,10 +1,12 @@
 <?php
     /**
-     * ./src/SWDatabaseInstallTrait.php
+     * ./src/PhingShopware/Trait/DatabaseInstaller.php
      * @author blange <code@wbl-konzept.de>
      * @package phingShopware
      * @version $id$
      */
+
+    namespace PhingShopware\Helper;
 
     /**
      * Trait to provide the basic install object for shopware.
@@ -12,11 +14,11 @@
      * @package phingShopware
      * @version $id$
      */
-    trait SWDatabaseInstallTrait
+    trait DatabaseInstaller
     {
         /**
          * The SW Component to install the system.
-         * @var null|Shopware\Recovery\Install\Database
+         * @var null|\Shopware\Recovery\Install\Database
          */
         protected $installSWApp = null;
 
@@ -35,7 +37,7 @@
             $project = $this->getProject();
 
             if (!$this->installSWApp) {
-                $this->installSWApp = new Shopware\Recovery\Install\Database(
+                $this->installSWApp = new \Shopware\Recovery\Install\Database(
                     array(
                         "user"     => (string) $project->getProperty('database_user'),
                         "password" => (string) $project->getProperty('database_password'),

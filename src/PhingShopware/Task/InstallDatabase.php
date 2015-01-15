@@ -1,12 +1,17 @@
 <?php
     /**
-     * ./src/InstallSWDatabaseTask.php
+     * ./src/PhingShopware/Task/InstallDatabase.php
      * @author blange <code@wbl-konzept.de>
      * @package phingShopware
      * @version $id$
      */
 
-require_once __DIR__ . DIRECTORY_SEPARATOR . 'AbstractSWTask.php';
+    namespace PhingShopware\Task;
+
+    require_once __DIR__ . DIRECTORY_SEPARATOR . 'Base.php';
+
+    use PhingShopware\Helper\DatabaseInstaller,
+        PhingShopware\Helper\DatabaseWriter;
 
     /**
      * Installs the shopware database.
@@ -14,10 +19,10 @@ require_once __DIR__ . DIRECTORY_SEPARATOR . 'AbstractSWTask.php';
      * @package phingShopware
      * @version $id$
      */
-    class InstallSWDatabaseTask extends AbstractSWTask
+    class InstallDatabase extends Base
     {
-        use SWDatabaseInstallTrait, SWDatabaseWriterTrait {
-            SWDatabaseInstallTrait::getSWInstallApp insteadof SWDatabaseWriterTrait;
+        use DatabaseInstaller, DatabaseWriter {
+            DatabaseInstaller::getSWInstallApp insteadof DatabaseWriter;
         }
 
         /**

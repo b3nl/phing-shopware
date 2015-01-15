@@ -1,6 +1,11 @@
 {
+    "autoload": {
+        "psr-0": {
+            "PhingShopware\\": "src/"
+        }
+    },
     "name": "b3nl/phing-shopware",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "description": "Adds shopware tasks to your phing-build.",
     "license": "GPL v3",
     "authors": [

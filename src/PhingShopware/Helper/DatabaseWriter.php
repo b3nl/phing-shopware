@@ -1,20 +1,22 @@
 <?php
     /**
-     * ./src/SWDatabaseWriterTrait.php
+     * ./src/PhingShopware/Trait/DatabaseWriter.php
      * @author blange <code@wbl-konzept.de>
      * @package phingShopware
      * @version $id$
      */
-    
+
+    namespace PhingShopware\Helper;
+
     /**
      * Trait to provide the basic install object for shopware.
      * @author blange <code@wbl-konzept.de>
      * @package phingShopware
      * @version $id$
      */
-    trait SWDatabaseWriterTrait
+    trait DatabaseWriter
     {
-        use SWDatabaseInstallTrait;
+        use DatabaseInstaller;
 
         /**
          * Returns the class to install shopware.
@@ -32,7 +34,7 @@
             $db = $install->getDatabase();
 
             if ($error = $install->getError()) {
-                throw new BuildException('database error: ' . $error);
+                throw new \BuildException('database error: ' . $error);
             } // if
 
             $dump = new \Shopware\Recovery\Common\Dump($file);
@@ -43,8 +45,8 @@
 
                     try {
                         $db->query($query);
-                    } catch (PDOException $exception) {
-                        throw new BuildException($exception->getMessage(), $exception->getCode());
+                    } catch (\PDOException $exception) {
+                        throw new \BuildException($exception->getMessage(), $exception->getCode());
                     } // catch
                 } // if
             } // foreach

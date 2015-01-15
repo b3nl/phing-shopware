@@ -1,8 +1,6 @@
 <?xml version="1.0" ?>
 
 <project name="test" basedir="." default="echoPossibleTargets">
-    <includepath classpath="src" />
-
     <!-- Needed globally in some tasks! -->
     <property name="database_host" value="your database host" />
     <property name="database_name" value="your database name" />
@@ -13,11 +11,8 @@
     <property name="language" value="your shop language (de|en)" />
     <property name="SW_PATH" value="The path to your shopware dir." override="true" />
 
-    <taskdef name="installSWDatabase" classname="InstallSWDatabaseTask" />
-    <taskdef name="installSWDemoData" classname="InstallSWDemoDataTask" />
-    <taskdef name="writeSWConfigFile" classname="writeSWConfigFileTask" />
-    <taskdef name="saveSWConfigData" classname="saveSWConfigDataTask" />
-    <taskdef name="writeToSWDatabase" classname="WriteToSWDatabaseTask" />
+    <includepath classpath="src" />
+    <taskdef file="etc/phingShopwareTasks.properties" />
 
     <target name="echoPossibleTargets">
         <echo>Please use one of this targets: prepareLocalEnv</echo>

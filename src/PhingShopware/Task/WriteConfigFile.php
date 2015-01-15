@@ -1,12 +1,16 @@
 <?php
     /**
-     * ./src/WriteSWConfigFileTask.php
+     * ./src/PhingShopware/Task/WriteConfigFile.php
      * @author blange <code@wbl-konzept.de>
      * @package phingShopware
      * @version $id$
      */
 
-    require_once __DIR__ . DIRECTORY_SEPARATOR . 'AbstractSWTask.php';
+    namespace PhingShopware\Task;
+
+    require_once __DIR__ . DIRECTORY_SEPARATOR . 'Base.php';
+
+    use PhingShopware\Helper\DatabaseInstaller;
 
     /**
      * Writes the shopware config file.
@@ -14,9 +18,9 @@
      * @package phingShopware
      * @version $id$
      */
-    class WriteSWConfigFileTask extends AbstractSWTask
+    class WriteConfigFile extends Base
     {
-        use SWDatabaseInstallTrait;
+        use DatabaseInstaller;
 
         /**
          * Taskname for logger
@@ -36,13 +40,13 @@
             $oInstall->setDatabase();
 
             if ($sError = $oInstall->getError()) {
-                throw new BuildException($sError);
+                throw new \BuildException($sError);
             } // if
 
             $oInstall->writeConfig();
 
             if ($sError = $oInstall->getError()) {
-                throw new BuildException($sError);
+                throw new \BuildException($sError);
             } // if
         } // function
     } // class

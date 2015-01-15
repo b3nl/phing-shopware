@@ -1,12 +1,17 @@
 <?php
     /**
-     * ./src/InstallSWDemoData.php
+     * ./src/PhingShopware/Task/InstallDemoData.php
      * @author blange <code@wbl-konzept.de>
      * @package phingShopware
      * @version $id$
      */
-    
-    require_once __DIR__ . DIRECTORY_SEPARATOR . 'AbstractSWTask.php';
+
+    namespace PhingShopware\Task;
+
+    require_once __DIR__ . DIRECTORY_SEPARATOR . 'Base.php';
+
+    use PhingShopware\Helper\DatabaseInstaller,
+        PhingShopware\Helper\DatabaseWriter;
     
     /**
      * Installs the shopware database.
@@ -14,10 +19,10 @@
      * @package phingShopware
      * @version $id$
      */
-    class InstallSWDemoDataTask extends AbstractSWTask
+    class InstallDemoData extends Base
     {
-        use SWDatabaseInstallTrait, SWDatabaseWriterTrait {
-            SWDatabaseInstallTrait::getSWInstallApp insteadof SWDatabaseWriterTrait;
+        use DatabaseInstaller, DatabaseWriter {
+            DatabaseInstaller::getSWInstallApp insteadof DatabaseWriter;
         }
 
         /**The version of the demo data.
@@ -91,17 +96,17 @@
                 );
 
                 if (!$copied) {
-                    throw new BuildException('Download of the demo data failed.');
+                    throw new \BuildException('Download of the demo data failed.');
                 } // if
             } // if
 
-            $archive = new ZipArchive();
+            $archive = new \ZipArchive();
             if (!$archive->open($demoArchive)) {
-                throw new BuildException('Cannot open the demo zip.');
+                throw new \BuildException('Cannot open the demo zip.');
             } // if
 
             if (!$archive->extractTo($path = $project->getProperty('SW_PATH'))) {
-                throw new BuildException('Demo cannot be extracted to the shopware path.');
+                throw new \BuildException('Demo cannot be extracted to the shopware path.');
             } // if
 
             $this->writeToSWDatabase($path . DIRECTORY_SEPARATOR . 'demo.sql');
