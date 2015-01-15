@@ -10,6 +10,8 @@
 
     require_once __DIR__ . DIRECTORY_SEPARATOR . 'Base.php';
 
+    use PhingShopware\Helper\DatabaseInstaller;
+
     /**
      * Writes the shopware config file.
      * @author blange <code@wbl-konzept.de>
