@@ -23,7 +23,7 @@
         /**
          * Checks if the shopware exists (property SW_PATH like the original shopware constant).
          * @return bool
-         * @throws BuildException
+         * @throws \BuildException
          */
         protected function checkSWPath()
         {
@@ -37,9 +37,7 @@
                     $sProp  = $oProject->getBasedir() . substr($sProp, 1);
                 } // if
 
-                if ($bReturn = (bool) realpath($sProp . '/recovery/common/autoload.php')) {
-                    $oProject->setProperty($sKey, $sProp);
-                } // if
+                $bReturn = (bool) realpath($sProp . '/recovery/common/autoload.php');
             } // if
 
             if (!$bReturn) {
@@ -51,12 +49,15 @@
 
         /**
          * Includes the install autoloader of the shopware system.
-         * @return PhingShopware_Task_Base
+         * @return Base
          */
         protected function includeSWAutoloader()
         {
             if (!defined('SW_PATH')) {
-                require_once realpath($this->getProject()->getProperty('SW_PATH')  . '/recovery/common/autoload.php');
+                $project = $this->getProject();
+                require_once realpath(
+                    $project->getBasedir() . "/{$project->getProperty('SW_PATH')}/recovery/common/autoload.php"
+                );
             } // if
 
             return $this;
@@ -68,7 +69,7 @@
          *
          * This is abstract here, but may not be overloaded by subclasses.
          *
-         * @throws BuildException
+         * @throws \BuildException
          */
         public function init()
         {

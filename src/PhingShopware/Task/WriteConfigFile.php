@@ -31,7 +31,7 @@
         /**
          * The main entry point method.
          * @return void
-         * @throws BuildException If there is something wrong
+         * @throws \BuildException If there is something wrong
          */
         public function main()
         {

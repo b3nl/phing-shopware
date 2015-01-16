@@ -10,7 +10,8 @@
 
     require_once __DIR__ . DIRECTORY_SEPARATOR . 'Base.php';
 
-    use PhingShopware\Helper\DatabaseInstaller;
+    use PhingShopware\Helper\DatabaseInstaller,
+        Shopware\Recovery\Install\Configuration;
 
     /**
      * Writes the shopware config file.
@@ -167,11 +168,11 @@
         /**
          * The main entry point method.
          * @return void
-         * @throws BuildException If there is something wrong.
+         * @throws \BuildException If there is something wrong.
          */
         public function main()
         {
-            $config  = new \Shopware\Recovery\Install\Configuration();
+            $config  = new Configuration();
             $install = $this->getSWInstallApp();
 
             $install->setDatabase();

@@ -48,7 +48,7 @@
          *
          * CLI Tools not yet usable for large sql files!
          * @return void
-         * @throws BuildException If there is something wrong.
+         * @throws \BuildException If there is something wrong.
          */
         public function main()
         {

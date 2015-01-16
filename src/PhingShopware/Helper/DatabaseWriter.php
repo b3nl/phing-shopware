@@ -7,6 +7,7 @@
      */
 
     namespace PhingShopware\Helper;
+    use \Shopware\Recovery\Common\Dump;
 
     /**
      * Trait to provide the basic install object for shopware.
@@ -22,7 +23,7 @@
          * Returns the class to install shopware.
          * @param  string $file Filename to the database file.
          * @return null|\Shopware\Recovery\Install\Database
-         * @throws BuildException If there is something wrong.
+         * @throws \BuildException If there is something wrong.
          */
         public function writeToSWDatabase($file)
         {
@@ -37,7 +38,7 @@
                 throw new \BuildException('database error: ' . $error);
             } // if
 
-            $dump = new \Shopware\Recovery\Common\Dump($file);
+            $dump = new Dump($file);
 
             foreach ($dump as $query) {
                 if ($query) {

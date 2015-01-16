@@ -18,7 +18,6 @@
      */
     class ActivatePlugin extends Base
     {
-
         /**
          * Ignores errors?
          * @var bool
@@ -48,7 +47,7 @@
             } // if
 
             exec(
-                "php {$this->getProject()->getProperty('SW_PATH')}/bin/console sw:plugin:activate " . escapeshellarg($plugin),
+                'php ' . SW_PATH . '/bin/console sw:plugin:activate ' . escapeshellarg($plugin),
                 $output,
                 $return
             );

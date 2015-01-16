@@ -39,8 +39,6 @@
         {
             $buffer  = tempnam('/tmp', 'deploy');
             $project = $this->getProject();
-            $path    = $project->getProperty('SW_PATH');
-
 
             file_put_contents(
                 $buffer,
@@ -64,7 +62,7 @@ EOD
 
             file_put_contents(
                 $buffer,
-                "\n" . file_get_contents($path . '/recovery/install/data/sql/sw4_clean.sql'),
+                "\n" . file_get_contents(SW_PATH . '/recovery/install/data/sql/sw4_clean.sql'),
                 FILE_APPEND
             );
 
@@ -72,7 +70,7 @@ EOD
             if (($lang = $project->getProperty('language')) && ($lang != "de")) {
                 file_put_contents(
                     $buffer,
-                    "\n" . file_get_contents($path . '/recovery/install/data/sql/en.sql'),
+                    "\n" . file_get_contents(SW_PATH . '/recovery/install/data/sql/en.sql'),
                     FILE_APPEND
                 );
             } // if
@@ -88,7 +86,7 @@ EOD
 
             file_put_contents(
                 $buffer,
-                "\n" . file_get_contents($path . '/recovery/install/data/sql/snippets.sql'),
+                "\n" . file_get_contents(SW_PATH . '/recovery/install/data/sql/snippets.sql'),
                 FILE_APPEND
             );
 
@@ -100,7 +98,7 @@ EOD
          *
          * CLI Tools not yet usable for large sql files!
          * @return void
-         * @throws BuildException If there is something wrong.
+         * @throws \BuildException If there is something wrong.
          */
         public function main()
         {

@@ -8,6 +8,8 @@
 
     namespace PhingShopware\Helper;
 
+    use \Shopware\Recovery\Install\Database;
+
     /**
      * Trait to provide the basic install object for shopware.
      * @author blange <code@wbl-konzept.de>
@@ -24,7 +26,7 @@
 
         /**
          * Returns a reference to current project
-         * @return Project Reference to current porject object
+         * @return \Project Reference to current porject object
          */
         abstract public function getProject(); // function
 
@@ -37,7 +39,7 @@
             $project = $this->getProject();
 
             if (!$this->installSWApp) {
-                $this->installSWApp = new \Shopware\Recovery\Install\Database(
+                $this->installSWApp = new Database(
                     array(
                         "user"     => (string) $project->getProperty('database_user'),
                         "password" => (string) $project->getProperty('database_password'),
@@ -46,7 +48,7 @@
                         "socket"   => (string) $project->getProperty('database_socket'),
                         "database" => (string) $project->getProperty('database_name'),
                     ),
-                    $project->getProperty('SW_PATH')
+                    SW_PATH
                 );
             } // if
 

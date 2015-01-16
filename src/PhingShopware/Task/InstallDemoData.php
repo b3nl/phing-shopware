@@ -80,7 +80,7 @@
          *
          * CLI Tools not yet usable for large sql files!
          * @return void
-         * @throws BuildException If there is something wrong.
+         * @throws \BuildException If there is something wrong.
          */
         public function main()
         {
@@ -105,11 +105,11 @@
                 throw new \BuildException('Cannot open the demo zip.');
             } // if
 
-            if (!$archive->extractTo($path = $project->getProperty('SW_PATH'))) {
+            if (!$archive->extractTo(SW_PATH)) {
                 throw new \BuildException('Demo cannot be extracted to the shopware path.');
             } // if
 
-            $this->writeToSWDatabase($path . DIRECTORY_SEPARATOR . 'demo.sql');
+            $this->writeToSWDatabase(SW_PATH . DIRECTORY_SEPARATOR . 'demo.sql');
         } // function
 
 
