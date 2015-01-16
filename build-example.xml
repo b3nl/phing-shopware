@@ -26,5 +26,9 @@
                 adminPassword="your admin password" adminUser="your admin user name"
                 configMail="the mail of the shop" shopCurrency="the default shop currency"
                 shopLanguage="the default shop language" shopHost="your shop host" />
+
+        <controlSWPlugin plugin="Debug" activate="true" ignore="false" install="true">
+            <property name="test" value="value" />
+        </controlSWPlugin>
     </target>
 </project>

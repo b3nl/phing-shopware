@@ -54,7 +54,7 @@
 
             if ($return && !$this->isIgnore()) {
                 throw new \BuildException(
-                    sprintf('Problem white activate the module "%s": %s', $plugin, implode("n", $output))
+                    sprintf('Problem white activating the plugin "%s": %s', $plugin, implode("n", $output))
                 );
             } // if
         } // function
