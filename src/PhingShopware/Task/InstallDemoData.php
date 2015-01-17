@@ -12,7 +12,7 @@
 
     use PhingShopware\Helper\DatabaseInstaller,
         PhingShopware\Helper\DatabaseWriter;
-    
+
     /**
      * Installs the shopware database.
      * @author blange <code@wbl-konzept.de>
@@ -84,7 +84,7 @@
          */
         public function main()
         {
-            $project     = $this->getProject();
+            $project = $this->getProject();
             $demoArchive = $project->getBasedir() . DIRECTORY_SEPARATOR . $this->getDemoVersion() . '.zip';
 
             if ($this->isOverwrite() || !file_exists($demoArchive)) {
@@ -105,8 +105,18 @@
                 throw new \BuildException('Cannot open the demo zip.');
             } // if
 
-            if (!$archive->extractTo(SW_PATH)) {
-                throw new \BuildException('Demo cannot be extracted to the shopware path.');
+            $sTmpDir = sys_get_temp_dir() . DIRECTORY_SEPARATOR . uniqid('deploy_');
+
+            if (!$archive->extractTo($sTmpDir)) {
+                throw new \BuildException('Demo cannot be extracted to the tmp dir.');
+            } // if
+
+            if ($demoContent = glob($sTmpDir . DIRECTORY_SEPARATOR . '*')) {
+                foreach ($demoContent as $content) {
+                    if (!rename($content, SW_PATH . DIRECTORY_SEPARATOR . basename($content))) {
+                        throw new \BuildException('Demo cannot be extracted to the shopware path.');
+                    } // if
+                } // foreach
             } // if
 
             $this->writeToSWDatabase(SW_PATH . DIRECTORY_SEPARATOR . 'demo.sql');
