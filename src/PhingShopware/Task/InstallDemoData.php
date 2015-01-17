@@ -37,6 +37,12 @@
         protected $overwrite = false;
 
         /**
+         * Should the process stop on error?
+         * @var bool
+         */
+        protected $stopOnError = true;
+
+        /**
          * Taskname for logger
          * @var string
          */
@@ -47,6 +53,59 @@
          * @var string
          */
         protected $urlPattern = 'http://releases.s3.shopware.com/demo_%s.zip';
+
+        /**
+         * Copies the directory to the shopware directory.
+         *
+         * We us a very low api to prevent errors for example with vagrant (protocol error).
+         * @param string $sourceDir
+         * @throws \BuildException
+         */
+        public function copyContents($sourceDir)
+        {
+            $paths = new \RecursiveIteratorIterator(
+                new \RecursiveDirectoryIterator($sourceDir, \FilesystemIterator::SKIP_DOTS),
+                \RecursiveIteratorIterator::SELF_FIRST
+            );
+
+            /** @var \SplFileInfo $pathObject */
+            foreach($paths as $path => $pathObject) {
+                $error        = '';
+                $relativePath = str_replace($sourceDir, '', $path);
+
+                if (!file_exists($newPath = SW_PATH . $relativePath)) {
+                    if ($pathObject->isDir()) {
+                        if (!mkdir($newPath, 0777)) {
+                            $error = 'Dir cannot be created in the shopware path. (' . $relativePath . ')';
+                        } // if
+                    } else if (!@copy($path, SW_PATH . $relativePath)) {
+                        $error = 'File cannot be copied to the shopware path. (' . $relativePath . ')';
+                    } // else
+                } // if
+
+                if ($error) {
+                    if ($this->isStopOnError()) {
+                        $this->printMessage($error);
+                    } else {
+                        throw new \BuildException($error);
+                    } // if
+                } // if
+            } // foreach
+        } // function
+
+        /**
+         * Prints a message.
+         * @param string $message
+         * @return void
+         */
+        protected function printMessage($message)
+        {
+            $echo = new \EchoTask();
+            $echo->setProject($this->getProject());
+            $echo->init();
+            $echo->setMessage($message);
+            $echo->main();
+        }
 
         /**
          * Returns the version for the demo data.
@@ -73,6 +132,15 @@
         public function isOverwrite()
         {
             return $this->overwrite;
+        }
+
+        /**
+         * Should the process stop on error?
+         * @return boolean
+         */
+        public function isStopOnError()
+        {
+            return $this->stopOnError;
         } // function
 
         /**
@@ -111,17 +179,10 @@
                 throw new \BuildException('Demo cannot be extracted to the tmp dir.');
             } // if
 
-            if ($demoContent = glob($sTmpDir . DIRECTORY_SEPARATOR . '*')) {
-                foreach ($demoContent as $content) {
-                    if (!rename($content, SW_PATH . DIRECTORY_SEPARATOR . basename($content))) {
-                        throw new \BuildException('Demo cannot be extracted to the shopware path.');
-                    } // if
-                } // foreach
-            } // if
+            $this->copyContents($sTmpDir);
 
             $this->writeToSWDatabase(SW_PATH . DIRECTORY_SEPARATOR . 'demo.sql');
         } // function
-
 
         /**
          * Sets the version for the demo data.
@@ -139,6 +200,15 @@
         public function setOverwrite($overwrite)
         {
             $this->overwrite = $overwrite;
+        } // function
+
+        /**
+         * Should the process stop on error?
+         * @param boolean $stopOnError
+         */
+        public function setStopOnError($stopOnError)
+        {
+            $this->stopOnError = $stopOnError;
         } // function
 
         /**
