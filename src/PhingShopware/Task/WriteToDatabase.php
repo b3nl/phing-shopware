@@ -35,13 +35,28 @@
         protected $taskName = 'writeToSWDatabase';
 
         /**
+         * Parses the file before importing.
+         * @var bool
+         */
+        protected $withParse = false;
+
+        /**
          * Returns the import file.
          * @return string
          */
         public function getFile()
         {
             return $this->file;
-        } // function
+        }
+
+        /**
+         * Should the file be parsed previously?
+         * @return boolean
+         */
+        public function isWithParse()
+        {
+            return $this->withParse;
+        }
 
         /**
          * The main entry point method.
@@ -52,8 +67,17 @@
          */
         public function main()
         {
-            if ($this->getFile()) {
-                $this->writeToSWDatabase($this->getFile());
+            if ($file = $this->getFile()) {
+                if ($this->isWithParse()) {
+                    file_put_contents(
+                        $newFile = tempnam(sys_get_temp_dir(), 'sqlparse'),
+                        str_replace(";\r\n", ";\n", file_get_contents($file))
+                    );
+
+                    $file = $newFile;
+                } // if
+
+                $this->writeToSWDatabase($file);
             } // if
         } // function
 
@@ -64,5 +88,14 @@
         public function setFile($file)
         {
             $this->file = $file;
+        } // function
+
+        /**
+         * Should the file be parsed previously?
+         * @param boolean $withParse
+         */
+        public function setWithParse($withParse)
+        {
+            $this->withParse = $withParse;
         } // function
     } // class
