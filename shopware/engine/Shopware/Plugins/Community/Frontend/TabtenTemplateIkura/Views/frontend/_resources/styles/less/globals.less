@@ -1,0 +1,579 @@
+// ****************************************************************
+// * IKURA - Clean, Minimal, Responsive, Shopware Template
+// * Copyright 2014, TAB10 (http://tab10.de)
+// ****************************************************************
+
+html, body{
+    min-height: 100%;
+    height: 100%;
+}
+
+body *, *:after, *:before {
+    .box-sizing(border-box);
+}
+
+body{
+    background: #fff;
+    color:#939393;
+    font-family: 'Roboto Condensed', sans-serif;
+    //-webkit-font-smoothing: antialiased;
+    //font-smoothing: antialiased;
+}
+
+img{
+    max-width: 100%;
+}
+
+figure img{
+    box-shadow: @baseBoxShadow;
+}
+
+strong{
+    font-weight: 700;
+    color:#666;
+}
+
+a{
+    text-decoration: none;
+    color: @darkGrey;
+    .transition(@transitionAll);
+
+    &:hover{
+        color: @highlightColor;
+    }
+}
+
+p{
+    a{
+        text-decoration: underline;
+    }
+}
+
+// all nav ul
+nav {
+    ul{
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    li{
+        float: left;
+    }
+}
+
+// helpers
+.cf{
+    .clearfix();
+}
+
+.ir{
+    .ir();
+}
+
+// layout
+.inner{
+    max-width: 1140px;
+    padding: 0 10px;
+    margin: 0 auto;
+    position: relative;
+    &:extend(.cf all);
+}
+
+.row{
+    &:extend(.cf all);
+}
+
+.col{
+    float: left;
+    padding: 0 @baseSpacing;
+    .resetMarginFirstChild();
+
+    &.one{
+        width:100%;
+    }
+
+    &.twothirds{
+        width: 66.666666%;
+    }
+
+    &.two{
+        width: 50%;
+    }
+
+    &.three{
+        width: 33.333333%;
+    }
+
+    &.four{
+        width: 25%;
+    }
+
+    &.five{
+        width: 20%;
+    }
+}
+
+#content{
+    position: relative;
+
+    .ctl_index &,
+    .ctl_Campaign &,
+    .ctl_campaign &{
+        margin: @baseSpacing*2 auto 0;
+    }
+}
+
+aside{
+    background: #f2f2f2;
+    width: 100%;
+    float: right;
+    padding: 0 ;
+
+    &#left_sidebar{
+        position: absolute;
+        top: 0;
+        left: 0;
+        display: none;
+        z-index: 100;
+        box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
+    }
+
+    h2{
+        padding: @baseSpacing/2 @baseSpacing;
+        margin: 0;
+    }
+
+    p{
+        padding: 0 @baseSpacing;
+    }
+}
+
+#aside_toggle{
+    width: 40px;
+    cursor: pointer;
+    height: 35px;
+    position: absolute;
+    top: -80px;
+    right: 12px;
+    z-index: 1002;
+    color: #fff;
+    .transition(@transitionAll);
+
+    &.hint{
+        &:before{
+            color: @yellow;
+        }
+    }
+
+    &:before{
+        content: "\f0c9";
+        font-family: "font-awesome";
+        position: absolute;
+        top: 6px;
+        left: 11px;
+        font-size: 1.5em;
+        color: #fff;
+        .transition(@transitionAll);
+    }
+
+    &:hover{
+        color: #fff;
+
+        &:before{
+            color: #fff;
+        }
+    }
+
+    &.active{
+        &:before{
+            content: "\f00d";
+        }
+    }
+}
+.inneraside{
+    height: 40px;
+
+    .inner{
+        padding: 0;
+    }
+}
+
+#right_sidebar{
+    padding: 0 0 0 @baseSpacing*2;
+}
+
+#center{
+    float: right;
+    width: 100%;
+    &:extend(.cf all);
+
+    .ctl_index &,
+    .ctl_Campaign &,
+    .ctl_campaign &,
+    .ctl_checkout &{
+        width: 100%;
+    }
+
+    .ctl_register &{
+        form{
+            width: 66%;
+        }
+    }
+
+    &.account .row{
+            width: 66%;
+    }
+
+    &.register form{
+        width: 50%;
+    }
+}
+
+.col_center_custom,
+.custom{
+
+    p{
+        line-height: 1.8em;
+        margin: 0 0 @baseSpacing*2;
+    }
+}
+
+.icon_link{
+
+    &:after{
+        font-family: "font-awesome";
+        margin: 0 0 0 @baseSpacing;
+    }
+}
+
+// font awesome icons, used this approach instead havin' a bunch of fontawesome less code
+.icon {
+    display: inline-block;
+    text-decoration: none;
+    position: relative;
+    .transition(@transitionColor);
+}
+
+.icon:after {
+    color: @darkGrey;
+    display: inline-block;
+    font-family: "font-awesome";
+    content: attr(data-icon);
+    font-size: 1.2em;
+    font-weight: normal;
+    line-height: 0.8em;
+    margin: 0 0.35em 0 0;
+    speak: none;
+    .transition(@transitionAll);
+}
+
+// loader
+.ajax_loader {
+    display:inline-block;
+    background: url("@{imgPath}/ico_ajax-loader.gif") no-repeat;
+    height:16px;
+    width:16px;
+    padding: 0 2px;
+    display:none;
+}
+
+@media only screen and (-webkit-min-device-pixel-ratio: 2) {
+    .ajax_loader{
+        background: url("@{imgPath}/ico_ajax-loaderx2.gif") #fff;
+        background-size: 16px auto;
+        border-radius: 50%;
+    }
+}
+
+// button
+.btn{
+    border: none;
+    padding: @baseSpacing/2;
+    background: @highlightColor;
+    color: #fff;
+    display: inline-block;
+    margin: 0 @baseSpacing @baseSpacing 0;
+    .transition(@transitionAll);
+
+    &:before,
+    &:after{
+        font-family: "font-awesome";
+    }
+
+    &:before{ margin: 0 @baseSpacing/2 0 0; }
+    &:after{ margin: 0 0 0 @baseSpacing/2; }
+
+    &.checkout,
+    &.viewbasket{
+        background: @yellow;
+
+        &:hover{
+            background: @yellowHover;
+            color: #fff;
+        }
+
+        &.transparent{
+            .opacity(0.5);
+
+            &:hover{
+                box-shadow: none;
+                cursor: not-allowed;
+            }
+        }
+    }
+
+    &.close{
+        &:before{
+            content: "\f00d";
+        }
+    }
+
+    &.premium{
+        background: @green;
+    }
+
+    &.neutral{
+        background: @midGrey;
+        color: @darkGrey;
+
+        &:disabled{
+            background: @midGrey;
+            &:hover{
+                background: @midGrey;
+            }
+        }
+
+        &:hover{
+            background: #ddd;
+            color: @darkGrey;
+        }
+    }
+
+    &.full{
+        width: 100%;
+        margin: @baseSpacing 0;
+        text-align: center;
+    }
+
+    &:hover{
+        background: @highlightColorHover;
+        color: #fff;
+    }
+}
+
+// arrow links
+.actions a,
+#detail_menu a,
+.ico.link,
+.sidebar_nav a,
+#servicenavi a,
+#main_navigation a{
+    display: block;
+    padding: @baseSpacing @baseSpacing*2 @baseSpacing @baseSpacing;
+    border-top: 1px solid @lightGrey;
+    position: relative;
+
+    &:after{
+        font-family: 'font-awesome';
+        content:"\f105";
+        position: absolute;
+        right: @baseSpacing;
+        top:50%;
+        margin: -11px 0 0;
+    }
+
+    &:hover{
+        background: none repeat scroll 0 0 rgba(0, 0, 0, 0.03);
+        color: @highlightColor;
+    }
+}
+
+
+.js{
+    .teaser_box{
+        display: none;
+    }
+}
+
+.lazy{
+    opacity: 0;
+    transition: opacity .3s ease-in;
+    background: #fff;
+}
+
+.cat_text{
+    padding: @baseSpacing*2 0;
+    font-size: 1.1em;
+
+    h1 {
+        margin: 0;
+    }
+
+    p{
+        color: @darkGreyHover;
+        line-height: 1.7em;
+        margin: 0 0 @baseSpacing*2;
+    }
+}
+
+.campaing-outer-container{
+    float: left;
+    width: 100%;
+}
+
+#navi_hint{
+    position: absolute;
+    display: none;
+    top: -35px;
+    right: 0;
+    padding: 5px 30px 7px;
+    background: #000;
+    color: #fff;
+    min-width: 125px;
+    text-align: center;
+
+    .cornerTopForLayers();
+
+    &:before,
+    &:after{
+        background: #000;
+        right: 27px;
+        box-shadow: none;
+        top:-2px;
+    }
+
+    &:hover{
+        display: block;
+
+        &:after{
+            background: #000;
+        }
+
+        .close_navihint{
+            display: block;
+        }
+    }
+}
+
+.close_navihint{
+    display: none;
+    cursor: pointer;
+    position: absolute;
+    color: #000;
+    top: 30px;
+    left: 0;
+    width: 100%;
+    font-size: 0.8em;
+    text-align: right;
+
+    &:after{
+        content: "\f00d";
+        font-family: "fontawesome";
+        position: absolute;
+        top: -22px;
+        right: 5px;
+        color: #fff;
+    }
+}
+
+.topseller_container{
+    margin: @baseSpacing 0;
+    border-bottom: 2px solid @lightGrey;
+
+    .flexslider .slides img{
+        width: auto;
+    }
+}
+
+// fix extended grid markup
+.grid_16{
+    max-width:1140px;
+    margin:0 auto;
+    padding: 0 10px;
+}
+
+
+@media only screen and (max-width: @mediaBreakpointTablet) {
+
+    #center{
+        width: 100%;
+        float: none;
+    }
+
+    #content{
+        padding-top: 60px;
+
+        .ctl_index &,
+        .ctl_Campaign &,
+        .ctl_campaign &{
+            margin:0;
+        }
+    }
+
+    .inneraside{
+        height: auto;
+    }
+
+    aside{
+        width: 100%;
+        float: none;
+        padding: 0;
+        margin: @baseSpacing*4 0 0;
+        display: block;
+
+        &#left_sidebar{
+            position: relative;
+            display: block;
+            margin: @baseSpacing 0;
+        }
+    }
+
+    #aside_toggle{
+        display: none;
+    }
+
+    #navi_hint{
+        display: none !important;
+    }
+
+    #center{
+
+        .ctl_register &{
+            form{
+                width: 100%;
+            }
+        }
+
+        &.account{
+            .row{
+                width: 100%;
+            }
+        }
+    }
+
+    .col{
+        &.four{
+            width: 50%;
+            margin: 0 0 @baseSpacing*2;
+        }
+
+        &.twothirds{
+            width: 100%;
+            margin: 0 0 @baseSpacing*2;
+        }
+    }
+}
+
+@media only screen and (max-width: @mediaBreakpointPhoneLandscape) {
+
+    .col{
+        &.two,
+        &.three,
+        &.four{
+            width: 100%;
+            margin: 0 0 @baseSpacing*4;
+        }
+
+    }
+}

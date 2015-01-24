@@ -1,0 +1,12 @@
+[2015-01-23 18:53:58] core.ERROR: exception 'Enlight_Controller_Exception' with message 'Unauthorized' in C:\xampp\htdocs\phingShopware\shopware\engine\Shopware\Controllers\Backend\Index.php:136
+Stack trace:
+#0 C:\xampp\htdocs\phingShopware\shopware\engine\Library\Enlight\Controller\Action.php(159): Shopware_Controllers_Backend_Index->loadAction()
+#1 C:\xampp\htdocs\phingShopware\shopware\engine\Library\Enlight\Controller\Dispatcher\Default.php(528): Enlight_Controller_Action->dispatch('loadAction')
+#2 C:\xampp\htdocs\phingShopware\shopware\engine\Library\Enlight\Controller\Front.php(228): Enlight_Controller_Dispatcher_Default->dispatch(Object(Enlight_Controller_Request_RequestHttp), Object(Enlight_Controller_Response_ResponseHttp))
+#3 C:\xampp\htdocs\phingShopware\shopware\engine\Shopware\Kernel.php(141): Enlight_Controller_Front->dispatch()
+#4 C:\xampp\htdocs\phingShopware\shopware\vendor\symfony\http-kernel\Symfony\Component\HttpKernel\HttpCache\HttpCache.php(472): Shopware\Kernel->handle(Object(Symfony\Component\HttpFoundation\Request), 1, true)
+#5 C:\xampp\htdocs\phingShopware\shopware\engine\Shopware\Components\HttpCache\AppCache.php(256): Symfony\Component\HttpKernel\HttpCache\HttpCache->forward(Object(Symfony\Component\HttpFoundation\Request), true, NULL)
+#6 C:\xampp\htdocs\phingShopware\shopware\vendor\symfony\http-kernel\Symfony\Component\HttpKernel\HttpCache\HttpCache.php(243): Shopware\Components\HttpCache\AppCache->forward(Object(Symfony\Component\HttpFoundation\Request), true)
+#7 C:\xampp\htdocs\phingShopware\shopware\engine\Shopware\Components\HttpCache\AppCache.php(102): Symfony\Component\HttpKernel\HttpCache\HttpCache->pass(Object(Symfony\Component\HttpFoundation\Request), true)
+#8 C:\xampp\htdocs\phingShopware\shopware\shopware.php(109): Shopware\Components\HttpCache\AppCache->handle(Object(Symfony\Component\HttpFoundation\Request))
+#9 {main} [] {"uid":"d80e294"}

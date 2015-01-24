@@ -1,0 +1,83 @@
+// ************************************************
+// * IKURA - Clean, Minimal, Responsive, Shopware Template
+// * Copyright 2014, TAB10 (http://tab10.de)
+// ************************************************
+
+// ---------------------------------------------------------------
+// variables
+// ---------------------------------------------------------------
+
+@imgPath:'../../images/css';
+@fontPath:'../../fonts';
+
+@baseSpacing:12px;
+@baseSpacingBig:45px;
+@baseTextShadow:0 1px 1px rgba(0,0,0,0.5);
+
+@baseBorderRadius:0;
+@baseBoxShadow:none;
+@baseBoxShadowMid:0 0 2px rgba(0, 0, 0, 0.2);
+@baseBoxShadowBig: 0 0 8px rgba(0, 0, 0, 0.2);
+@transitionColor:color .3s ease-out;
+@transitionAll:all .3s ease-out;
+
+@mediaBreakpointTablet:800px;
+@mediaBreakpointPhoneLandscape:600px;
+@mediaBreakpointPhonePortrait:400px;
+
+// layout gutter
+@gutter:2%;
+
+// colors
+@lightGrey:#f2f2f2;
+@midGrey:#d4d4d4;
+@darkGrey:#59585a;
+@arrowGrey:#c8c8c8;
+
+@darkGreyHover:#666;
+
+@highlightColor:#47cbc8; // mintgreen
+@highlightColorHover:#2db6b3;
+
+@green:#2BBE04;
+@red:#e70000;
+@yellow:#FDBC21;
+@yellowHover:#fac444;
+
+.resetMarginFirstChild(){
+    &:first-child{
+        margin: 0;
+    }
+}
+
+.cornerTopForLayers(){
+
+    &:before, &:after{
+        background: #fff;
+        content: "";
+        display: block;
+        height: 10px;
+        width: 10px;
+        position: absolute;
+        top: -4px;
+        right: 50%;
+        margin: 0 0 0 -5px;
+        .rotate(45deg);
+        .transition(@transitionAll);
+    }
+
+    &:before{
+        .box-shadow(0 0 3px rgba(0,0,0,0.3));
+        z-index: -1;
+    }
+
+    &:hover{
+        &:after{
+            background: @lightGrey;
+        }
+    }
+}
+
+// give it to me
+.normalize();
+.h5bp();

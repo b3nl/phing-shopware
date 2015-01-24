@@ -1,0 +1,402 @@
+// ****************************************************************
+// * IKURA - Clean, Minimal, Responsive, Shopware Template
+// * Copyright 2014, TAB10 (http://tab10.de)
+// ****************************************************************
+
+// ---------------------------------------------------------------
+// NAVIGATIONS
+// ---------------------------------------------------------------
+.page_navigation{
+    font-weight: 400;
+    font-size: 0.9em;
+
+    a{
+        position: relative;
+    }
+}
+
+#main_navigation{
+    position: relative;
+    float: left;
+    z-index: 1001;
+    font-size: 0.9em;
+    width: 100%;
+    font-family: 'Fjalla One', sans-serif;
+    text-transform: uppercase;
+
+    > .inner > ul {
+        padding: 0 0 0 25%;
+
+        > li {
+            > a{
+                border-top: none;
+                display: inline-block;
+
+                &:after{
+                    display: none;
+                }
+            }
+        }
+    }
+
+    &.fixed{
+        position: fixed;
+    }
+
+    .firstlevel{
+        > li{
+            &:first-child{
+                a{
+                    background: none;
+                    color: #fff;
+                    padding: @baseSpacing @baseSpacing @baseSpacing 0;
+
+                    &:hover{
+                        color: @highlightColor;
+                        //background: #fff;
+
+                        .icon:after{
+                            color: @highlightColor;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    li{
+        position: relative;
+
+        &:hover > ul {
+            display: block;
+        }
+    }
+
+    ul li{
+        float: left;
+    }
+
+    ul ul{
+        background: #fff;
+        border-radius: 0 0 @baseBorderRadius/2 @baseBorderRadius/2;
+        display: none;
+        position: absolute;
+        width: 200px;
+
+        li{
+            float: none;
+            border-top: 1px solid @lightGrey;
+
+            &:last-child{
+                a{
+                    border-radius: 0 0 @baseBorderRadius/2 @baseBorderRadius/2;
+                }
+            }
+        }
+
+        a{
+            //background: #fff;
+            color: @darkGrey;
+            border-left: none;
+            border-right: none;
+            padding: @baseSpacing @baseSpacing*2 @baseSpacing @baseSpacing;
+
+            .icon{
+                position: absolute;
+                top: 50%;
+                right: @baseSpacing;
+                margin: -7px 0 0;
+
+                &:after{
+                    color: #fff;
+                }
+            }
+            &:hover{
+                background: @lightGrey;
+            }
+        }
+
+        ul{
+            border-left: 1px solid @midGrey;
+            left: 100%;
+            top: -1px;
+
+            li{
+                &:last-child{
+                    a{
+                        border-radius: 0 0 @baseBorderRadius 0;
+                    }
+                }
+            }
+        }
+    }
+
+    a{
+        border-top: none;
+        //background: #fff;
+        display: block;
+        padding: @baseSpacing;
+        color: #fff;
+
+        &.first{
+            .icon:after{
+                margin: 0;
+            }
+        }
+
+        &:hover,
+        &.active {
+            //background: #fff;
+            color: @highlightColorHover;
+        }
+        &:hover{
+            .icon:after{
+                color: @highlightColor;
+            }
+        }
+
+        &:after{
+            margin: -8px 0 0;
+        }
+    }
+}
+
+// ---------------------------------------------------------------
+/// SIDEBAR NAV
+// ---------------------------------------------------------------
+
+.sidebar_nav{
+
+    li{
+        float: none;
+
+        &.active.sub{
+            .submenu{
+                display: block;
+            }
+        }
+    }
+
+    a{
+        border-top: 1px solid @midGrey;
+        padding: @baseSpacing/2+2 @baseSpacing*2 @baseSpacing/2+2 @baseSpacing;
+
+        &:after{
+            font-size: 1.2em;
+            margin: -10px 0 0;
+        }
+    }
+
+    > ul{
+        > li{
+            &:first-child{
+
+                >a{
+                    border-top: none;
+                    box-shadow: none;
+                }
+            }
+
+            // secoundlevel
+            &.active.sub{
+                a{
+                    background: #fff;
+                    border-top:1px solid #f2f2f2;
+
+                    &:hover{
+                        background: #fff;
+                    }
+
+                    &.flag{
+                        color:@highlightColor;
+
+                        .icon:after{
+                            color: @highlightColor;
+                        }
+                    }
+                }
+                // active toplevel
+                >a{
+                    &.flag{
+                        background: @darkGrey;
+                        color:#fff;
+
+                        .icon:after{
+                            color: #fff;
+                        }
+
+                        &:hover{
+                            background: @darkGreyHover;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    ul ul{
+        a{
+            padding: @baseSpacing/2+2 @baseSpacing @baseSpacing/2+2 @baseSpacing*2;
+        }
+        ul{
+            a{
+                padding: @baseSpacing/2+2 @baseSpacing @baseSpacing/2+2 @baseSpacing*3;
+            }
+        }
+    }
+
+    .submenu{
+        display: none;
+
+        &.level1{
+            //box-shadow: 0px -4px 4px rgba(0, 0, 0, 0.2);
+        }
+    }
+}
+
+.mobile_nav_button{
+    display: none;
+}
+
+
+@media only screen and (max-width: @mediaBreakpointTablet) {
+    .service_bar{
+        width: 30%;
+        margin: 0;
+    }
+
+    #submit_search_btn{
+        width: 50px;
+    }
+
+    #main_navigation{
+        background: #000;
+        position: absolute !important;
+        z-index: 9000;
+        top: 50 !important;
+        width: 100%;
+        .translate(-300%, 0);
+        .transition(@transitionAll);
+
+        &.active{
+            .translate(0, 0);
+        }
+
+        .inner{
+            padding: 0;
+        }
+
+        > .inner > ul {
+            padding: 0;
+        }
+
+        .firstlevel > li{
+            &:first-child{
+                a{
+                    border-top: none;
+                    padding: 24px 12px 24px 50%;
+                }
+            }
+        }
+
+        li{
+            float: none;
+            width: 100%;
+        }
+
+        a{
+            background: #000;
+            border-left:none;
+            border-right: none;
+            color: #fff;
+
+            .icon:after{
+                color: @darkGrey;
+            }
+        }
+
+        ul ul{
+            width: 100%;
+            display: block;
+            position: relative;
+            left: 0;
+
+            a{
+                padding: @baseSpacing @baseSpacing @baseSpacing @baseSpacing*2;
+                border-left:none;
+                border-right: none;
+                background: #fff;
+                color: @darkGrey;
+
+                .icon:after{
+                    color: @darkGrey;
+                }
+            }
+
+            ul{
+                border: none;
+                position: relative;
+                width: 100%;
+                left: 0;
+
+                a{
+                    padding: @baseSpacing @baseSpacing @baseSpacing @baseSpacing*4;
+                }
+            }
+        }
+    }
+
+    .mobile_nav_button{
+        position: fixed;
+        background: #000;
+        z-index: 10001;
+        display: block;
+        cursor: pointer;
+        top: 0;
+        left: 60px;
+        height: 50px;
+        width: 50px;
+        border-radius: 0 0 @baseBorderRadius 0;
+        box-shadow: @baseBoxShadow;
+
+        &:after{
+            color: #fff;
+            margin: 0;
+            position: absolute;
+            left: 10px;
+            top: 10px;
+        }
+
+        .icon:after{
+            color: #fff;
+            margin: 0;
+            position: absolute;
+            left: 10px;
+            top: -1px;
+            font-size: 1.8em;
+        }
+
+        &.active{
+
+            .icon:after{
+                top: 12px;
+            }
+
+            .mobile_nav_show{
+                display: none;
+            }
+            .mobile_nav_hide{
+                display: block;
+            }
+        }
+    }
+
+    .mobile_nav_hide{
+        display: none;
+    }
+}
+
+
+
+
+

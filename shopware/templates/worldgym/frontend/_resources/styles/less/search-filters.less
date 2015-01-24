@@ -1,0 +1,147 @@
+// ****************************************************************
+// * IKURA - Clean, Minimal, Responsive, Shopware Template
+// * Copyright 2014, TAB10 (http://tab10.de)
+// ****************************************************************
+
+.category_filter,
+.searchbox,
+.supplier_filter{
+
+    ul{
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        float: left;
+    }
+
+    li{
+        float: left;
+        margin: 0 @baseSpacing 0 0;
+
+        a {
+            &:before{
+                content: "\f096";
+                font-family: "font-awesome";
+                margin: 0 @baseSpacing/2 0 0
+            }
+        }
+    }
+
+    .categories,
+    .searchbox,
+    .supplier_filter{
+
+        .row{ margin: 0 0 @baseSpacing; }
+
+        a{
+            &:after,
+            &:before{ font-family: "font-awesome"; font-size: 1.1em; }
+
+            &:before{ margin: 0 @baseSpacing/2 0 0 }
+            &:after{ margin: 0 @baseSpacing/2 }
+
+            &.active{
+                &:after{ content: "\f105"; }
+                &:before{ content: "\f046"; }
+            }
+
+            &.showall{
+                &:before{ content: "\f00d"; color: @red; }
+            }
+        }
+    }
+    .categories{
+        padding: @baseSpacing 0 0;
+        border-top: 1px solid @midGrey;
+    }
+}
+
+.searchbox{
+    padding: 0 @baseSpacing;
+    margin: 0 0 @baseSpacing;
+
+    ul{
+        border-top: 1px solid @midGrey;
+        box-shadow: 0 1px 0 #fff inset;
+        width: 100%;
+        padding: @baseSpacing 0 0;
+    }
+}
+
+.searchbox,
+.supplier_filter{
+
+    li{
+        float: none;
+        margin: 0 0 @baseSpacing/2;
+
+        &:before{ font-family:"font-awesome"; margin: 0 @baseSpacing/2 0 0; }
+
+        &.active{
+            &:before{ content: "\f046"; }
+        }
+
+        &.close{
+            a:before{ content: ""}
+            &:before{ content: "\f00d"; color: @red; }
+        }
+    }
+
+    .overflow{
+        img{
+            &:hover{
+                box-shadow: @baseBoxShadow;
+            }
+        }
+    }
+}
+
+.fuzzy{
+    .listing_actions{
+        padding: @baseSpacing 0 0;
+        border-top: 1px solid @midGrey;
+        box-shadow: 0 1px 0 #fff inset;
+    }
+}
+
+.supplier_filter{
+
+    .slideContainer ul,
+    .filter_toggler,
+    .options{
+        color: @darkGrey;
+        position: relative;
+        border-top: 1px solid @midGrey;
+        box-shadow: 0 1px 0 #fff inset;
+        padding: @baseSpacing;
+        width: 100%;
+        .transition(@transitionAll);
+    }
+
+    .filter_toggler, .options{
+        cursor: pointer;
+
+        &:after{
+            content:"\f055" !important;
+            font-family: "font-awesome";
+            position: absolute;
+            right: @baseSpacing;
+            top: 50%;
+            margin: -7px 0 0;
+        }
+
+        &.active,
+        &:hover{
+            background: rgba(255,255,255,0.7);
+        }
+
+        &.active{
+            &:after{ content:"\f056" !important; }
+        }
+
+        .expandcollapse{
+            display: none;
+        }
+    }
+
+}

@@ -1,0 +1,32 @@
+// ****************************************************************
+// * IKURA - Clean, Minimal, Responsive, Shopware Template
+// * Copyright 2014, TAB10 (http://tab10.de)
+// ****************************************************************
+
+#breadcrumb{
+    padding: 14px 0;
+    font-size: 0.7em;
+    width: 100%;
+    //border-bottom: 1px solid @lightGrey;
+
+    .icon{
+        &:after{
+            margin: 0 0.5em;
+        }
+    }
+
+    a.last{
+        color: @highlightColor;
+    }
+
+    .back_to_overview{
+        display: inline-block;
+        margin: 0 @baseSpacing 0 0;
+    }
+}
+
+@media only screen and (max-width: @mediaBreakpointTablet) {
+    #breadcrumb{
+        display: none;
+    }
+}

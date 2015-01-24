@@ -1,0 +1,182 @@
+=====================================================================================
+	
+	IKURA - Clean, minimal & responsive theme
+	changelog.txt
+
+=====================================================================================
+Version 2.0.0
+    - removed flexslider
+    - added slick slider for better shoppingworld support
+    - added childthemesupport (to accomplish subscription support)
+    - added logoupload
+    - added pagewidth control
+    - Updated Font-Awesome 4.2.0
+
+
+Version 1.1.2
+    - Fixed new slider bug from 1.1.1
+
+    CHANGED FILES:
+    - flexslider.less
+    - main.css
+
+Version 1.1.1
+    - Added bannerslider preloader
+    - Improved badges
+    - Updated Font Awesome to 4.1.0
+
+    CHANGED FILES:
+    - flexslider.less
+    - listing.less
+    - main.css
+    - widgets/emotion/components/component_banner_slider.tpl
+    - fonts/font-awesome (folder)
+
+    ADDED FILES:
+    - ikura-gridsheet-shoppingworld.jpg
+
+Version 1.1.0
+
+    - Added scroll to top function
+    - Improved trusted eshop, notification and facebook plugins
+
+    CHANGED FILES:
+    - compressed-min.js
+    - custom.js
+    - plugins.less
+    - main-regular.css
+    - main.css
+    - frontend/index/header.tpl
+
+    ADDED FILES:
+    - jquery.scrollUp.js
+    - frontend/plugins/facebook/blocks_detail.tpl
+    - frontend/plugins/notification/index.tpl
+    - demo-woraround-ikura.zip
+
+Version 1.0.6
+
+    - Fixed strange resize behavior of navigation first link in chrome
+    - Removed double copyright block
+
+    CHANGED FILES:
+    - components.less
+    - main-regular.less
+    - main.css
+    - frontend/index/footer.tpl
+
+
+Version 1.0.5
+
+    - Added Paypal/Paypal Express styling
+    - Improved privacy checkbox style
+    - Removed commented trusted eshop logo
+    - Added extended markup fix
+
+    CHANGED FILES:
+    - checkout.less
+    - forms.less
+    - globals.less
+    - plugins.less
+    - main-regular.css
+    - main.css
+    - frontend/index/menu_footer.tpl
+
+Version 1.0.4
+
+    - Improved rich snippet data
+    - Improved viewed slider price up
+
+    CHANGED FILES:
+    - emotion.less
+    - main-regular.css
+    - main.css
+    - frontend/detail/data.tpl
+
+
+Version 1.0.3
+
+    - Added rich snippet data
+    - Changed hint time
+    - Improved bloglist view
+    - Fixed search filter images
+    - Improved breadcrumb on detailpage
+
+    CHANGED FILES:
+    - compressed-min.js
+    - custom.js
+    - blog.less
+    - search-filters.less
+    - main.css
+    - frontend/blog/box.tpl
+    - frontend/detail/data.tpl
+    - frontend/detail/index.tpl
+    - frontend/detail/navigation.tpl
+
+    ADDED FILES:
+        - frontend/_resources/styles/main-regular.css
+
+
+Version 1.0.2
+
+    - Added masonry for bloglisting
+    - Added navigation hint
+    - Fixed minor bugs
+
+    CHANGED FILES:
+    - compressed-min.js
+    - custom.js
+    - jquery.shopware.js
+    - checkout.less
+    - detail.less
+    - emotion.less
+    - globals.less
+    - listing.less
+    - search-filters.less
+    - main.css
+    - frontend/account/index.tpl
+    - frontend/blog/index.tpl
+    - frontend/checkout/cart_item.tpl
+    - frontend/checkout/confirm.tpl
+    - frontend/checkout/confirm_footer.tpl
+    - frontend/custom/index.tpl
+    - frontend/listing/index.tpl
+    - frontend/listing/right.tpl
+    - frontend/note/index.tpl
+    - frontend/search/fuzzy_left.tpl
+    - widgets/listing/top_seller.tpl
+
+    ADDED FILES:
+    - masonry.pkgd.min.js
+    - frontend/detail/ajax.tpl
+
+
+Version 1.0.1
+
+	- Fixed bloglisting artbox width
+	- Fixed emotion pseudo price
+	- changed cart handling at ajax checkout
+	- adjusted sale badge for listings
+	- fixed ajax search
+	- improved google webfonts (for https)
+
+	CHANGED FILES:
+	- blog.less
+	- checkout.less
+	- emotion.less
+	- globals.less
+	- listing.less
+	- page-header.less
+	- plugins.less
+	- main.css
+	- /frontend/checkout/ajax_add_article.tpl
+	- /frontend/checkout/cart_item.tpl
+	- /frontend/index/header.tpl
+
+    ADDED FILES:
+    - /frontend/listing/banner.tpl
+
+
+Version 1.0 (13.04.2014)
+
+	- Initial Release
