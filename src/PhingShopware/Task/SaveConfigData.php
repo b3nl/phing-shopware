@@ -54,6 +54,12 @@
         protected $adminUser = 'demo';
 
         /**
+         * The base path for the shopware install.
+         * @var string
+         */
+        protected $basePath = '';
+
+        /**
          * The default shop mail.
          * @var string
          */
@@ -61,9 +67,15 @@
 
         /**
          * The default shop currency.
+         * @var int
+         */
+        protected $shopCurrency = 1;
+
+        /**
+         * The default shop host.
          * @var string
          */
-        protected $shopCurrency = 'EUR';
+        protected $shopHost = 'localhost';
 
         /**
          * The default shop language.
@@ -72,10 +84,10 @@
         protected $shopLanguage = 'de_DE';
 
         /**
-         * The default shop host.
+         * The name of the shop.
          * @var string
          */
-        protected $shopHost = 'localhost';
+        protected $shopName = 'Demoshop';
 
         /**
          * Taskname for logger
@@ -127,7 +139,16 @@
         public function getAdminUser()
         {
             return $this->adminUser;
-        } // function
+        }
+
+        /**
+         * Returns the base path.
+         * @return string
+         */
+        public function getBasePath()
+        {
+            return $this->basePath;
+        }
 
         /**
          * Returns the shop mail.
@@ -163,6 +184,15 @@
         public function getShopLanguage()
         {
             return $this->shopLanguage;
+        }
+
+        /**
+         * Returns the name of the shop.
+         * @return string
+         */
+        public function getShopName()
+        {
+            return $this->shopName;
         } // function
 
         /**
@@ -174,9 +204,18 @@
         {
             $config  = new Configuration();
             $install = $this->getSWInstallApp();
+            $project = $this->getProject();
 
             $install->setDatabase();
             $config->setDatabase($install->getDatabase());
+
+            // fake server values used by shopware.
+            $original = $_SERVER;
+            $_SERVER['SCRIPT_NAME'] = str_replace(
+                DIRECTORY_SEPARATOR,
+                '/',
+                rtrim(($this->getBasePath() ?: '/'), '/') . '/recovery/install/index.php'
+            );
 
             $configData = array(
                 'c_config_admin_email'     => $this->getAdminEmail(),
@@ -186,16 +225,20 @@
                 'c_config_admin_password2' => $this->getAdminPassword(),
                 'c_config_admin_user'      => $this->getAdminUser(),
                 'c_config_mail'            => $this->getConfigMail(),
-                'c_config_shop_currency'   => $this->getShopCurrency(),
+                'c_config_shop_currency'   => (int) $this->getShopCurrency(),
+                'c_config_shop_host'       => $_SERVER["HTTP_HOST"] = $this->getShopHost(),
                 'c_config_shop_language'   => $this->getShopLanguage(),
-                'c_config_shop_host'       => $this->getShopHost(),
+                'c_config_shopName'        => $this->getShopName(),
                 'c_edition'                => 'ce',
+                'c_license'                => '',
             );
 
             try {
                 $config->createAdmin($configData);
                 $config->updateConfig($configData);
                 $config->updateShop($configData);
+
+                $_SERVER = $original;
             } catch (\Exception $exception) {
                 throw new \BuildException($exception->getMessage());
             } // catch
@@ -248,6 +291,15 @@
         } // function
 
         /**
+         * Sets the shopware base path relative to the document root.
+         * @param string $basePath
+         */
+        public function setBasePath($basePath)
+        {
+            $this->basePath = $basePath;
+        } // function
+
+        /**
          * Sets the mail of the shop.
          * @param string $configMail
          */
@@ -281,5 +333,14 @@
         public function setShopLanguage($shopLanguage)
         {
             $this->shopLanguage = $shopLanguage;
+        } // function
+
+        /**
+         * Sets the name of the shop.
+         * @param string $shopName
+         */
+        public function setShopName($shopName)
+        {
+            $this->shopName = $shopName;
         } // function
     } // class
