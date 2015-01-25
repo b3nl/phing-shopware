@@ -234,6 +234,8 @@
             );
 
             try {
+                $this->log('Saving config data: ' . implode(',', array_keys($configData)));
+
                 $config->createAdmin($configData);
                 $config->updateConfig($configData);
                 $config->updateShop($configData);

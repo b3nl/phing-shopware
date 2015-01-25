@@ -43,6 +43,8 @@
                 throw new \BuildException($sError);
             } // if
 
+            $this->log('Writing config file');
+
             $oInstall->writeConfig();
 
             if ($sError = $oInstall->getError()) {

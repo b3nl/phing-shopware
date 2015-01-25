@@ -46,16 +46,22 @@
                 throw new \BuildException("plugin attribute is required", $this->location);
             } // if
 
+            $this->log('Activation of plugin: ' . $plugin);
+
             exec(
                 'php ' . SW_PATH . '/bin/console sw:plugin:activate ' . escapeshellarg($plugin),
                 $output,
                 $return
             );
 
-            if ($return && !$this->isIgnore()) {
-                throw new \BuildException(
-                    sprintf('Problem white activating the plugin "%s": %s', $plugin, implode("n", $output))
-                );
+            if ($return) {
+                $msg = sprintf('Problem white activating the plugin "%s": %s', $plugin, implode("n", $output));
+
+                if ($this->isIgnore()) {
+                    $this->log($msg, \Project::MSG_WARN);
+                }  else {
+                    throw new \BuildException($msg);
+                } // else
             } // if
         } // function
 

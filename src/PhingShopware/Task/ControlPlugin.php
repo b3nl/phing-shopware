@@ -120,20 +120,27 @@
             } // if
 
             if ($this->isInstall()) {
+                $this->log('Installing plugin: ' . $plugin);
                 exec(
                     'php ' . SW_PATH . '/bin/console sw:plugin:install ' . escapeshellcmd($plugin),
                     $output,
                     $return
                 );
 
-                if ($return && !$this->isIgnore()) {
-                    throw new \BuildException(
-                        sprintf('Problem white activating/deactivating the plugin "%s": %s', $plugin, implode("n", $output))
-                    );
+                if ($return) {
+                    $msg = sprintf('Problem white activating/deactivating the plugin "%s": %s', $plugin, implode("n", $output));
+
+                    if ($this->isIgnore()) {
+                        $this->log($msg, \Project::MSG_WARN);
+                    } else {
+                        throw new \BuildException($msg);
+                    } // else
                 } // if
             } // if
 
             if (!is_null($activate = $this->isActivate())) {
+                $this->log('Activating plugin: ' . $plugin);
+
                 exec(
                     'php ' . SW_PATH . '/bin/console sw:plugin:' . ($activate ? 'activate' : 'deactivate') .
                         ' ' . escapeshellcmd($plugin),
@@ -141,10 +148,14 @@
                     $return
                 );
 
-                if ($return && !$this->isIgnore()) {
-                    throw new \BuildException(
-                        sprintf('Problem white activating/deactivating the plugin "%s": %s', $plugin, implode("n", $output))
-                    );
+                if ($return) {
+                    $msg = sprintf('Problem white activating/deactivating the plugin "%s": %s', $plugin, implode("n", $output));
+
+                    if ($this->isIgnore()) {
+                        $this->log($msg, \Project::MSG_WARN);
+                    } else {
+                        throw new \BuildException($msg);
+                    } // else
                 } // if
             } // if
 
@@ -153,6 +164,8 @@
                 foreach ($this->properties as $property) {
                     $name  = $property->getName();
                     $value = $property->getValue();
+
+                    $this->log('Setting plugin-property: ' . $plugin . ' - ' . $name);
 
                     exec(
                         $cmd = sprintf(
@@ -166,10 +179,14 @@
                         $return
                     );
 
-                    if ($return && !$this->isIgnore()) {
-                        throw new \BuildException(
-                            sprintf('Problem white setting the plugin config %s::%s: %s', $plugin, $name, implode("n", $output))
-                        );
+                    if ($return) {
+                        $msg = sprintf('Problem white setting the plugin config %s::%s: %s', $plugin, $name, implode("n", $output));
+
+                        if ($this->isIgnore()) {
+                            $this->log($msg, \Project::MSG_WARN);
+                        } else {
+                            throw new \BuildException($msg);
+                        } // else
                     } // if
                 } // foreach
             } // if

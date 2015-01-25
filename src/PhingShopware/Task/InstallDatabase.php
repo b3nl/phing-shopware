@@ -37,12 +37,9 @@
          */
         protected function collectSWQueriesInBuffer()
         {
-            $buffer  = tempnam('/tmp', 'deploy');
+            $this->log('Buffering basic preparation queries.');
             $project = $this->getProject();
-
-            file_put_contents(
-                $buffer,
-                <<<'EOD'
+            $queries = <<<'EOD'
     SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
     SET time_zone = "+00:00";
     SET FOREIGN_KEY_CHECKS = 0;
@@ -56,37 +53,31 @@
     /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
     /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
     /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
-EOD
-            );
+EOD;
 
-            file_put_contents(
-                $buffer,
-                "\n" . file_get_contents(SW_PATH . '/recovery/install/data/sql/sw4_clean.sql'),
-                FILE_APPEND
-            );
+            $this->log('Buffering sql/sw4_clean.sql');
+            $queries .= "\n" . file_get_contents(SW_PATH . '/recovery/install/data/sql/sw4_clean.sql');
 
             // If end-user import en.sql
             if (($lang = $project->getProperty('language')) && ($lang != "de")) {
-                file_put_contents(
-                    $buffer,
-                    "\n" . file_get_contents(SW_PATH . '/recovery/install/data/sql/en.sql'),
-                    FILE_APPEND
-                );
+                $this->log('Buffering sql/en.sql');
+                $queries .= "\n" . file_get_contents(SW_PATH . '/recovery/install/data/sql/en.sql');
             } // if
 
-            file_put_contents(
-                $buffer,
-                'SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
+            $this->log('Buffering language preparation queries.');
+            $queries .= "\n" . 'SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
                    SET time_zone = "+00:00";
                    SET @locale_de_DE = (SELECT id FROM s_core_locales WHERE locale = "de_DE");
-                   SET @locale_en_GB = (SELECT id FROM s_core_locales WHERE locale = "en_GB");',
-                FILE_APPEND
-            );
+                   SET @locale_en_GB = (SELECT id FROM s_core_locales WHERE locale = "en_GB");';
 
+            $this->log('Buffering sql/snippets.sql');
+            $queries .= "\n" . file_get_contents(SW_PATH . '/recovery/install/data/sql/snippets.sql');
+            $buffer   = tempnam(sys_get_temp_dir(), 'deploy');
+
+            $this->log('Writing query buffer.');
             file_put_contents(
                 $buffer,
-                "\n" . file_get_contents(SW_PATH . '/recovery/install/data/sql/snippets.sql'),
-                FILE_APPEND
+                str_replace(";\r\n", ";\n", $queries)
             );
 
             return $buffer;
@@ -101,7 +92,9 @@ EOD
          */
         public function main()
         {
-            $this->writeToSWDatabase($this->collectSWQueriesInBuffer());
+            $buffer = $this->collectSWQueriesInBuffer();
+            $this->log('Installing query buffer.');
+            $this->writeToSWDatabase($buffer);
 
             return null;
         } // function

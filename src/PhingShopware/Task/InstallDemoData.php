@@ -85,27 +85,13 @@
 
                 if ($error) {
                     if ($this->isStopOnError()) {
-                        $this->printMessage($error);
+                        $this->log($error, \Project::MSG_WARN);
                     } else {
                         throw new \BuildException($error);
                     } // if
                 } // if
             } // foreach
         } // function
-
-        /**
-         * Prints a message.
-         * @param string $message
-         * @return void
-         */
-        protected function printMessage($message)
-        {
-            $echo = new \EchoTask();
-            $echo->setProject($this->getProject());
-            $echo->init();
-            $echo->setMessage($message);
-            $echo->main();
-        }
 
         /**
          * Returns the version for the demo data.
