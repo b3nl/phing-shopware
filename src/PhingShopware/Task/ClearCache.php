@@ -1,38 +1,38 @@
 <?php
-/**
- * ./src/PhingShopware/Task/ClearCache.php
- * @author blange <code@wbl-konzept.de>
- * @package phingShopware
- * @subpackage Task
- * @version $id$
- */
-
-namespace PhingShopware\Task;
-
-/**
- * Clears the shopware cache.
- * @author blange <code@wbl-konzept.de>
- * @package phingShopware
- * @subpackage Task
- * @version $id$
- */
-class ClearCache extends Base
-{
     /**
-     * Taskname for logger
-     * @var string
+     * ./src/PhingShopware/Task/ClearCache.php
+     * @author blange <code@wbl-konzept.de>
+     * @package phingShopware
+     * @subpackage Task
+     * @version $id$
      */
-    protected $taskName = 'controlSWPlugin';
+
+    namespace PhingShopware\Task;
 
     /**
-     * Cleans the cache with the shopware shell script.
+     * Clears the shopware cache.
+     * @author blange <code@wbl-konzept.de>
+     * @package phingShopware
+     * @subpackage Task
+     * @version $id$
      */
-    public function main()
+    class ClearCache extends Base
     {
-        exec('bash ' . SW_PATH . '/cache/clear_cache.sh', $output, $return);
+        /**
+         * Taskname for logger
+         * @var string
+         */
+        protected $taskName = 'controlSWPlugin';
 
-        if (!$return) {
-            $this->log('Cache cleared', \Project::MSG_INFO);
-        } // if
-    } // function
-} // class
+        /**
+         * Cleans the cache with the shopware shell script.
+         */
+        public function main()
+        {
+            exec('bash ' . SW_PATH . '/cache/clear_cache.sh', $output, $return);
+
+            if (!$return) {
+                $this->log('Cache cleared', \Project::MSG_INFO);
+            } // if
+        } // function
+    } // class
