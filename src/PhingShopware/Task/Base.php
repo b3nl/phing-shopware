@@ -9,6 +9,7 @@
     namespace PhingShopware\Task;
 
     require_once 'phing/Task.php';
+    require_once realpath(__DIR__ . '/../Helper/CLICaller.php');
     require_once realpath(__DIR__ . '/../Helper/DatabaseInstaller.php');
     require_once realpath(__DIR__ . '/../Helper/DatabaseWriter.php');
 

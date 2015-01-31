@@ -25,7 +25,7 @@
          * @return null|\Shopware\Recovery\Install\Database
          * @throws \BuildException If there is something wrong.
          */
-        public function writeToSWDatabase($file)
+        protected function writeToSWDatabase($file)
         {
             $return = false;
 
