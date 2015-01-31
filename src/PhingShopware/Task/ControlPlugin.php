@@ -52,7 +52,7 @@
          * Taskname for logger
          * @var string
          */
-        protected $taskName = 'SWPlugin';
+        protected $taskName = 'controlSWPlugin';
 
         /**
          * Creates a child property.
