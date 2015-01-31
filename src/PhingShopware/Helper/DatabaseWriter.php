@@ -3,16 +3,19 @@
      * ./src/PhingShopware/Trait/DatabaseWriter.php
      * @author blange <code@wbl-konzept.de>
      * @package phingShopware
+     * @subpackage Helper
      * @version $id$
      */
 
     namespace PhingShopware\Helper;
+
     use \Shopware\Recovery\Common\Dump;
 
     /**
      * Trait to provide the basic install object for shopware.
      * @author blange <code@wbl-konzept.de>
      * @package phingShopware
+     * @subpackage Helper
      * @version $id$
      */
     trait DatabaseWriter

@@ -3,6 +3,7 @@
      * ./src/PhingShopware/Task/ActivatePlugin.php
      * @author blange <code@wbl-konzept.de>
      * @package phingShopware
+     * @subpackage Task
      * @version $id$
      */
 
@@ -14,6 +15,7 @@
      * Activates a plugin.
      * @author blange <code@wbl-konzept.de>
      * @package phingShopware
+     * @subpackage Task
      * @version $id$
      */
     class ActivatePlugin extends Base
@@ -59,7 +61,7 @@
 
                 if ($this->isIgnore()) {
                     $this->log($msg, \Project::MSG_WARN);
-                }  else {
+                } else {
                     throw new \BuildException($msg);
                 } // else
             } // if
@@ -72,7 +74,7 @@
         public function getPlugin()
         {
             return $this->plugin;
-        }
+        } // function
 
         /**
          * Ignore errors?
@@ -81,7 +83,7 @@
         public function isIgnore()
         {
             return $this->ignore;
-        }
+        } // function
 
         /**
          * Ignore errors?

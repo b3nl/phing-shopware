@@ -29,4 +29,4 @@
 
             return array($output, $return);
         } // function
-    } // class
+    } // trait

@@ -3,6 +3,7 @@
      * ./src/PhingShopware/Task/Base.php
      * @author blange <code@wbl-konzept.de>
      * @package phingShopware
+     * @subpackage Task
      * @version $id$
      */
 
@@ -17,6 +18,7 @@
      * Basic Shopware-Task.
      * @author blange <code@wbl-konzept.de>
      * @package phingShopware
+     * @subpackage Task
      * @version $id$
      */
     abstract class Base extends \Task
@@ -28,17 +30,17 @@
          */
         protected function checkSWPath()
         {
-            $bReturn  = false;
+            $bReturn = false;
             $oProject = $this->getProject();
 
             if ($sProp = $oProject->getProperty($sKey = 'SW_PATH')) {
                 $sProp = rtrim($sProp, '\\/') . DIRECTORY_SEPARATOR;
 
                 if (strpos($sProp, '.') === 0) {
-                    $sProp  = $oProject->getBasedir() . substr($sProp, 1);
+                    $sProp = $oProject->getBasedir() . substr($sProp, 1);
                 } // if
 
-                $bReturn = (bool) realpath($sProp . '/recovery/common/autoload.php');
+                $bReturn = (bool)realpath($sProp . '/recovery/common/autoload.php');
             } // if
 
             if (!$bReturn) {

@@ -3,6 +3,7 @@
      * ./src/PhingShopware/Task/InstallDemoData.php
      * @author blange <code@wbl-konzept.de>
      * @package phingShopware
+     * @subpackage Task
      * @version $id$
      */
 
@@ -17,6 +18,7 @@
      * Installs the shopware database.
      * @author blange <code@wbl-konzept.de>
      * @package phingShopware
+     * @subpackage Task
      * @version $id$
      */
     class InstallDemoData extends Base

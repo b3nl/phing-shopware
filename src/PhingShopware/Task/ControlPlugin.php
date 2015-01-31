@@ -3,6 +3,7 @@
      * ./src/PhingShopware/Task/ActivatePlugin.php
      * @author blange <code@wbl-konzept.de>
      * @package phingShopware
+     * @subpackage Task
      * @version $id$
      */
 
@@ -14,6 +15,7 @@
      * Activates a plugin.
      * @author blange <code@wbl-konzept.de>
      * @package phingShopware
+     * @subpackage Task
      * @version $id$
      */
     class ControlPlugin extends Base

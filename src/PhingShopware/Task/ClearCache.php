@@ -22,7 +22,7 @@
          * Taskname for logger
          * @var string
          */
-        protected $taskName = 'controlSWPlugin';
+        protected $taskName = 'clearSWCache';
 
         /**
          * Cleans the cache with the shopware shell script.

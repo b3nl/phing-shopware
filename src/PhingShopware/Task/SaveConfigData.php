@@ -3,6 +3,7 @@
      * ./src/PhingShopware/Task/SaveConfigData.php
      * @author blange <code@wbl-konzept.de>
      * @package phingShopware
+     * @subpackage Task
      * @version $id$
      */
 
@@ -17,6 +18,7 @@
      * Writes the shopware config file.
      * @author blange <code@wbl-konzept.de>
      * @package phingShopware
+     * @subpackage Task
      * @version $id$
      */
     class SaveConfigData extends Base

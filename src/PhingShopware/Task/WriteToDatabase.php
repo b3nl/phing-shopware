@@ -3,6 +3,7 @@
      * ./src/PhingShopware/Task/WriteToDatabase.php
      * @author blange <code@wbl-konzept.de>
      * @package phingShopware
+     * @subpackage Task
      * @version $id$
      */
 
@@ -16,6 +17,7 @@
      * Installs the shopware database.
      * @author blange <code@wbl-konzept.de>
      * @package phingShopware
+     * @subpackage Task
      * @version $id$
      */
     class WriteToDatabase extends Base

@@ -3,6 +3,7 @@
      * ./src/PhingShopware/Trait/DatabaseInstaller.php
      * @author blange <code@wbl-konzept.de>
      * @package phingShopware
+     * @subpackage Helper
      * @version $id$
      */
 
@@ -14,6 +15,7 @@
      * Trait to provide the basic install object for shopware.
      * @author blange <code@wbl-konzept.de>
      * @package phingShopware
+     * @subpackage Helper
      * @version $id$
      */
     trait DatabaseInstaller
@@ -41,12 +43,12 @@
             if (!$this->installSWApp) {
                 $this->installSWApp = new Database(
                     array(
-                        "user"     => (string) $project->getProperty('database_user'),
-                        "password" => (string) $project->getProperty('database_password'),
-                        "host"     => (string) $project->getProperty('database_host'),
-                        "port"     => (string) $project->getProperty('database_port'),
-                        "socket"   => (string) $project->getProperty('database_socket'),
-                        "database" => (string) $project->getProperty('database_name'),
+                        "user" => (string)$project->getProperty('database_user'),
+                        "password" => (string)$project->getProperty('database_password'),
+                        "host" => (string)$project->getProperty('database_host'),
+                        "port" => (string)$project->getProperty('database_port'),
+                        "socket" => (string)$project->getProperty('database_socket'),
+                        "database" => (string)$project->getProperty('database_name'),
                     ),
                     SW_PATH
                 );
