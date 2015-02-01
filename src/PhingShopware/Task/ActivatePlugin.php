@@ -20,6 +20,8 @@
      */
     class ActivatePlugin extends Base
     {
+        use CLICaller;
+
         /**
          * Ignores errors?
          * @var bool
@@ -50,11 +52,7 @@
 
             $this->log('Activation of plugin: ' . $plugin);
 
-            exec(
-                'php ' . SW_PATH . '/bin/console sw:plugin:activate ' . escapeshellarg($plugin),
-                $output,
-                $return
-            );
+            list($output, $return) = $this->clu2cli('sw:plugin:activate ' . escapeshellarg($plugin));
 
             if ($return) {
                 $msg = sprintf('Problem white activating the plugin "%s": %s', $plugin, implode("n", $output));

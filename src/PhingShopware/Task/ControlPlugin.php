@@ -20,6 +20,8 @@
      */
     class ControlPlugin extends Base
     {
+        use CLICaller;
+
         /**
          * Should the module be activated?
          * @var void|bool
@@ -123,11 +125,8 @@
 
             if ($this->isInstall()) {
                 $this->log('Installing plugin: ' . $plugin);
-                exec(
-                    'php ' . SW_PATH . '/bin/console sw:plugin:install ' . escapeshellcmd($plugin),
-                    $output,
-                    $return
-                );
+
+                list($output, $return) = $this->clu2cli('sw:plugin:install ' . escapeshellarg($plugin));
 
                 if ($return) {
                     $msg = sprintf('Problem white activating/deactivating the plugin "%s": %s', $plugin, implode("n", $output));
@@ -143,11 +142,8 @@
             if (!is_null($activate = $this->isActivate())) {
                 $this->log('Activating plugin: ' . $plugin);
 
-                exec(
-                    'php ' . SW_PATH . '/bin/console sw:plugin:' . ($activate ? 'activate' : 'deactivate') .
-                        ' ' . escapeshellcmd($plugin),
-                    $output,
-                    $return
+                list($output, $return) = $this->clu2cli(
+                    'sw:plugin:' . ($activate ? 'activate' : 'deactivate') . ' ' . escapeshellarg($plugin)
                 );
 
                 if ($return) {
@@ -169,17 +165,9 @@
 
                     $this->log('Setting plugin-property: ' . $plugin . ' - ' . $name);
 
-                    exec(
-                        $cmd = sprintf(
-                            'php %s/bin/console sw:plugin:config:set %s %s %s',
-                            SW_PATH,
-                            escapeshellcmd($plugin),
-                            escapeshellcmd($name),
-                            escapeshellcmd($value)
-                        ),
-                        $output,
-                        $return
-                    );
+                    list($output, $return) = $this->clu2cli(sprintf(
+                        'sw:plugin:config:set %s %s %s', escapeshellcmd($plugin), escapeshellcmd($name), escapeshellcmd($value)
+                    ));
 
                     if ($return) {
                         $msg = sprintf('Problem white setting the plugin config %s::%s: %s', $plugin, $name, implode("n", $output));
