@@ -1,6 +1,6 @@
 <?php
     /**
-     * ./src/PhingShopware/Task/ActivatePlugin.php
+     * ./src/PhingShopware/Task/ControlPlugin.php
      * @author blange <code@wbl-konzept.de>
      * @package phingShopware
      * @subpackage Task
