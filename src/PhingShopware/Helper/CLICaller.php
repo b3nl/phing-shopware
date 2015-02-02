@@ -25,6 +25,7 @@
          */
         protected function clu2cli($cmd)
         {
+            $this->log('php ' . SW_PATH . '/bin/console ' . $cmd, \Project::MSG_VERBOSE);
             exec('php ' . SW_PATH . '/bin/console ' . $cmd, $output, $return);
 
             return array($output, $return);
