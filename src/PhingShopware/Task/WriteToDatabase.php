@@ -73,7 +73,7 @@
                 if ($this->isWithParse()) {
                     file_put_contents(
                         $newFile = tempnam(sys_get_temp_dir(), 'sqlparse'),
-                        str_replace(";\r\n", ";\n", file_get_contents($file))
+                        str_replace(";\r\n", ";\n", file_get_contents($file)) . "\n"
                     );
 
                     $file = $newFile;
