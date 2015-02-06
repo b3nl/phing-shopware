@@ -79,11 +79,15 @@
          */
         public function main()
         {
+            $this->log($this->getCommand());
+
             $project   = $this->getProject();
             $shellCall = $this->clu2cli($this->getCommand());
 
             if ($output = $this->getConsoleOutput()) {
-                $project->setProperty($output, reset($shellCall));
+                $this->log($outputContent = implode("\n", reset($shellCall)), \Project::MSG_DEBUG);
+
+                $project->setProperty($output, $outputContent);
             } // if
 
             if ($return = $this->getReturnProperty()) {
