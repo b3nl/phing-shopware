@@ -26,12 +26,6 @@
     abstract class Base extends \Task
     {
         /**
-         * The shopware kernel.
-         * @var null
-         */
-        protected $kernel = null;
-
-        /**
          * Checks if the shopware exists (property SW_PATH like the original shopware constant).
          * @return bool
          * @throws \BuildException
@@ -61,22 +55,6 @@
         } // function
 
         /**
-         * Returns the shopware kernel.
-         * @return Kernel
-         */
-        protected function getSWKernel()
-        {
-            if (!$this->kernel) {
-                $environment = getenv('ENV') ?: getenv('REDIRECT_ENV') ?: 'production';
-                $this->kernel = new Kernel($environment, $environment !== 'production');
-
-                $this->kernel->boot();
-            } // if
-
-            return $this->kernel;
-        } // function
-
-        /**
          * Includes the install autoloader of the shopware system.
          * @return Base
          */
@@ -87,8 +65,6 @@
                 require_once realpath(
                     $project->getBasedir() . "/{$project->getProperty('SW_PATH')}/recovery/common/autoload.php"
                 );
-
-                require_once SW_PATH . DIRECTORY_SEPARATOR . 'autoload.php';
             } // if
 
             return $this;

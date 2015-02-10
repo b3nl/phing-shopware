@@ -9,9 +9,11 @@
 
     namespace PhingShopware\Task\Condition\Plugin;
 
-    use PhingShopware\Task\Base as BaseTask;
+    use PhingShopware\Helper\KernelProvider,
+        PhingShopware\Task\Base as BaseTask;
 
     require_once realpath(__DIR__ . '/../../Base.php');
+    require_once realpath(__DIR__ . '/../../../Helper/KernelProvider.php');
 
     /**
      * Base Plugin-Condition.
@@ -21,6 +23,8 @@
      */
     abstract class Base extends BaseTask
     {
+        use KernelProvider;
+
         /**
          * The plugin id.
          * @var string
@@ -57,6 +61,20 @@
             return $this->property;
         } // function
 
+        /**
+         * Returns the path to the shopware root.
+         * @return string
+         */
+        protected function getSWPath()
+        {
+            return SW_PATH;
+        } // function
+
+        /**
+         * Returns the found plugin from the plugin manager.
+         * @return \Shopware\Models\Plugin\Plugin
+         * @throws \BuildException
+         */
         protected function getSWPlugin()
         {
             if (!$pluginName = $this->getPlugin()) {
