@@ -23,6 +23,16 @@
         use DatabaseInstaller;
 
         /**
+         * Provides a project level log event to the task.
+         *
+         * @param string $msg The message to log
+         * @param integer $level The priority of the message
+         * @see BuildEvent
+         * @see BuildListener
+         */
+        abstract public function log($msg, $level = \Project::MSG_INFO); // function
+
+        /**
          * Returns the class to install shopware.
          * @param  string $file Filename to the database file.
          * @return null|\Shopware\Recovery\Install\Database
@@ -48,6 +58,8 @@
                     set_time_limit(0);
 
                     try {
+                        $this->log($query, \Project::MSG_VERBOSE);
+
                         $db->query($query);
                     } catch (\PDOException $exception) {
                         throw new \BuildException($exception->getMessage(), $exception->getCode());
