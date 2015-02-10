@@ -52,6 +52,7 @@ crashlytics-build.properties
 **/demo.sql
 **/files
 **/media
+build.xml
 db
 phing.phar
 shopware
