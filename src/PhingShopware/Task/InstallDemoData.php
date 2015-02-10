@@ -9,10 +9,10 @@
 
     namespace PhingShopware\Task;
 
-    require_once __DIR__ . DIRECTORY_SEPARATOR . 'Base.php';
-
     use PhingShopware\Helper\DatabaseInstaller,
         PhingShopware\Helper\DatabaseWriter;
+
+    require_once __DIR__ . DIRECTORY_SEPARATOR . 'Base.php';
 
     /**
      * Installs the shopware database.

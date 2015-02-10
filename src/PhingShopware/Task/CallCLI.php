@@ -11,6 +11,8 @@
 
     use PhingShopware\Helper\CLICaller;
 
+    require_once __DIR__ . DIRECTORY_SEPARATOR . 'Base.php';
+
     /**
      * Calls the shopware CLI.
      * @author blange <code@wbl-konzept.de>

@@ -9,9 +9,9 @@
 
     namespace PhingShopware\Task;
 
-    require_once __DIR__ . DIRECTORY_SEPARATOR . 'Base.php';
-
     use PhingShopware\Helper\CLICaller;
+
+    require_once __DIR__ . DIRECTORY_SEPARATOR . 'Base.php';
 
     /**
      * Activates a plugin.
@@ -125,13 +125,16 @@
                 throw new \BuildException("plugin attribute is required", $this->location);
             } // if
 
+            $installed = false;
+
             if ($this->isInstall()) {
                 $this->log('Installing plugin: ' . $plugin);
 
                 list($output, $return) = $this->clu2cli('sw:plugin:install ' . escapeshellarg($plugin));
+                $installed = !$return;
 
                 if ($return) {
-                    $msg = sprintf('Problem white activating/deactivating the plugin "%s": %s', $plugin, implode("n", $output));
+                    $msg = sprintf('Problem white installing the plugin "%s": %s', $plugin, implode("n", $output));
 
                     if ($this->isIgnore()) {
                         $this->log($msg, \Project::MSG_WARN);

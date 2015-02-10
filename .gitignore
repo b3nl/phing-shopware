@@ -47,9 +47,12 @@ com_crashlytics_export_strings.xml
 crashlytics.properties
 crashlytics-build.properties
 
-# ignore downloads
+# ignore downloads and tests
 **/*.zip
 **/demo.sql
 **/files
 **/media
+db
+phing.phar
+shopware
 

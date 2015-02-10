@@ -9,9 +9,9 @@
 
     namespace PhingShopware\Task;
 
-    require_once __DIR__ . DIRECTORY_SEPARATOR . 'Base.php';
-
     use PhingShopware\Helper\CLICaller;
+
+    require_once __DIR__ . DIRECTORY_SEPARATOR . 'Base.php';
 
     /**
      * Activates a plugin.

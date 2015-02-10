@@ -27,8 +27,36 @@
                 configMail="the mail of the shop" shopCurrency="the default shop currency"
                 shopLanguage="the default shop language" shopHost="your shop host" />
 
-        <controlSWPlugin plugin="Debug" activate="true" ignore="false" install="true">
-            <property name="test" value="value" />
-        </controlSWPlugin>
+        <!-- Some plugin processing -->
+        <callSWCLI command="sw:plugin:refresh" />
+        <ifSWPlugin>
+            <existsSWPlugin plugin="AdvancedMenu" />
+            <then>
+                <echo>AdvancedMenu exists.</echo>
+            </then>
+            <else>
+                <echo>AdvancedMenu does not exist.</echo>
+            </else>
+        </ifSWPlugin>
+
+        <ifSWPlugin>
+            <isSWPluginInstalled plugin="AdvancedMenu" />
+            <then>
+                <echo>AdvancedMenu allready installed.</echo>
+            </then>
+            <else>
+                <controlSWPlugin install="true" plugin="AdvancedMenu" />
+            </else>
+        </ifSWPlugin>
+
+        <ifSWPlugin>
+            <isSWPluginActive plugin="AdvancedMenu" />
+            <then>
+                <echo>AdvancedMenu allready activated.</echo>
+            </then>
+            <else>
+                <controlSWPlugin activate="true" plugin="AdvancedMenu" />
+            </else>
+        </ifSWPlugin>
     </target>
 </project>

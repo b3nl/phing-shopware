@@ -9,6 +9,8 @@
 
     namespace PhingShopware\Task;
 
+    require_once __DIR__ . DIRECTORY_SEPARATOR . 'Base.php';
+
     /**
      * Clears the shopware cache.
      * @author blange <code@wbl-konzept.de>
