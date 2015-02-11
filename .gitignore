@@ -55,5 +55,6 @@ crashlytics-build.properties
 build.xml
 db
 phing.phar
+plugins
 shopware
 

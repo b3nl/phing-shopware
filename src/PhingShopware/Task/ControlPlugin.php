@@ -26,7 +26,7 @@
 
         /**
          * Should the module be activated?
-         * @var void|bool
+         * @var void|bool|string
          */
         protected $activate = null;
 
@@ -66,6 +66,8 @@
          */
         public function createProperty() {
             $this->properties[] = $return = new \PropertyTask();
+
+            $return->setPrefix($this->getPlugin());
 
             return $return;
         } // function
@@ -148,7 +150,7 @@
                 $this->log('Activating plugin: ' . $plugin);
 
                 list($output, $return) = $this->clu2cli(
-                    'sw:plugin:' . ($activate ? 'activate' : 'deactivate') . ' ' . escapeshellarg($plugin)
+                    'sw:plugin:' . ((bool) $activate ? 'activate' : 'deactivate') . ' ' . escapeshellarg($plugin)
                 );
 
                 if ($return) {
@@ -163,37 +165,68 @@
             } // if
 
             if ($props = $this->getProperties()) {
-                /** @var \PropertyTask $property */
-                foreach ($this->properties as $property) {
-                    $name  = $property->getName();
-                    $value = $property->getValue();
-
-                    $this->log('Setting plugin-property: ' . $plugin . ' - ' . $name);
-
-                    list($output, $return) = $this->clu2cli(sprintf(
-                        'sw:plugin:config:set %s %s %s', escapeshellcmd($plugin), escapeshellcmd($name), escapeshellcmd($value)
-                    ));
-
-                    if ($return) {
-                        $msg = sprintf('Problem white setting the plugin config %s::%s: %s', $plugin, $name, implode("n", $output));
-
-                        if ($this->isIgnore()) {
-                            $this->log($msg, \Project::MSG_WARN);
-                        } else {
-                            throw new \BuildException($msg);
-                        } // else
-                    } // if
-                } // foreach
+                $this->processPluginProperties($props);
             } // if
+        } // function
+
+        protected function processPluginProperties($props)
+        {
+            $plugin = $this->getPlugin();
+
+            /** @var \PropertyTask|string $value */
+            foreach ($props as $name => $value) {
+                if ($value instanceof \PropertyTask) {
+                    if ($file = $value->getFile()) {
+                        if ($file->exists()) {
+                            $fileProps = new \Properties();
+                            $fileProps->load($file);
+
+                            if ($fileProps = $fileProps->getProperties()) {
+                                $this->processPluginProperties($fileProps);
+                            } // if
+                        } else {
+                            throw new \BuildException('Could not load the property file for plugin ' . $plugin);
+                        }
+
+                        continue;
+                    } // if
+
+                    $name  = $value->getName();
+                    $value = $value->getValue();
+                } // if
+
+                $this->log('Setting plugin-property: ' . $plugin . ' - ' . $name);
+
+                list($output, $return) = $this->clu2cli(sprintf(
+                    'sw:plugin:config:set %s %s %s', escapeshellcmd($plugin), escapeshellcmd($name), escapeshellcmd($value)
+                ));
+
+                if ($return) {
+                    $msg = sprintf('Problem white setting the plugin config %s::%s: %s', $plugin, $name, implode("n", $output));
+
+                    if ($this->isIgnore()) {
+                        $this->log($msg, \Project::MSG_WARN);
+                    } else {
+                        throw new \BuildException($msg);
+                    } // else
+                } // if
+            } // foreach
+
+            return $this;
         } // function
 
         /**
          * Should the module be activated?
-         * @param boolean $activate
+         *
+         * Please use 0 or 1 for this method, because a phing property with the value "false" is parsed to an empty
+         * string aswell. If you fill the value directy, and not thru an phing property, you can use boolean values aswell.
+         * @param string|bool $activate
          */
         public function setActivate($activate)
         {
-            $this->activate = $activate;
+            if ($activate !== '') {
+                $this->activate = $activate;
+            } // if
         } // function
 
         /**

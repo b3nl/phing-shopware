@@ -55,7 +55,9 @@
                 <echo>AdvancedMenu allready activated.</echo>
             </then>
             <else>
-                <controlSWPlugin activate="true" plugin="AdvancedMenu" />
+                <controlSWPlugin activate="true" plugin="AdvancedMenu">
+                    <!--<property file="test.properties" /> -->
+                </controlSWPlugin>
             </else>
         </ifSWPlugin>
     </target>
