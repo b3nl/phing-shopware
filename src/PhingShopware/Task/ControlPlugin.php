@@ -197,8 +197,14 @@
 
                 $this->log('Setting plugin-property: ' . $plugin . ' - ' . $name);
 
+                if (is_bool($value)) {
+                    $value = $value ? 'true' : 'false';
+                } elseif (is_string($value)) {
+                    $value = escapeshellarg($value);
+                } // elseif
+
                 list($output, $return) = $this->clu2cli(sprintf(
-                    'sw:plugin:config:set %s %s %s', escapeshellcmd($plugin), escapeshellcmd($name), escapeshellcmd($value)
+                    'sw:plugin:config:set %s %s %s', escapeshellcmd($plugin), escapeshellcmd($name), $value
                 ));
 
                 if ($return) {
