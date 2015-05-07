@@ -147,7 +147,7 @@
             } // if
 
             if (!is_null($activate = $this->isActivate())) {
-                $this->log('Activating plugin: ' . $plugin);
+                $this->log('Activating/Deactivating plugin: ' . $plugin);
 
                 list($output, $return) = $this->clu2cli(
                     'sw:plugin:' . ((bool) $activate ? 'activate' : 'deactivate') . ' ' . escapeshellarg($plugin)
