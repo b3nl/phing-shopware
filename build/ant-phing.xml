@@ -1,0 +1,383 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project name="Shopware" basedir="../" default="build">
+    <includepath classpath="${project.basedir}/../dev/vendor/b3nl/phing-shopware/src/" />
+    <taskdef file="${project.basedir}/../dev/vendor/b3nl/phing-shopware/etc/phingShopwareTasks.properties" />
+
+    <property name="basedir" value="${project.basedir}" override="true" />
+    <property name="build.dir" value="${project.basedir}/build"/>
+
+    <property file="${build.dir}/build.properties"/>
+    <property file="${build.dir}/build.properties.dist"/>
+
+    <target name="build" depends="build-daily"/>
+
+    <target name="build-daily" depends="build-log-dir">
+        <phingcall target="test-unit"/>
+        <phingcall target="test-static"/>
+        <phingcall target="build-phpcb"/>
+    </target>
+
+    <target name="build-continuous" depends="unit-shopware-continuous"/>
+    <target name="build-unit" depends="build-cache-dir, build-composer-install, build-config, build-database, build-generate-attributes, build-snippets-deploy, build-theme-initialize, build-install-lock-file, build-disable-firstrunwizard" />
+    <target name="test-unit" depends="unit-shopware"/>
+
+    <target name="configure" description="Set up build-variables">
+        <input message="Please enter db-host:" propertyName="user.db.host" defaultValue="${db.host}" />
+
+        <input message="Please enter db-name:" propertyName="user.db.name" defaultValue="${db.name}" />
+
+        <input message="Please enter db-username:" propertyName="user.db.user" defaultValue="${db.user}" />
+
+        <input message="Please enter db-password:" propertyName="user.db.password" />
+
+        <input message="Please enter app.host:" propertyName="user.app.host" defaultValue="${app.host}" />
+
+        <input message="Please enter app.path:" propertyName="user.app.path" defaultValue="${app.path}" />
+
+        <delete file="${build.dir}/build.properties" quiet="true" />
+
+        <copy file="${build.dir}/build.properties.dist" tofile="${build.dir}/build.properties" overwrite="true">
+            <filterchain>
+                <!-- needed a "hack" to change the default file without tokens -->
+                <replacetokens begintoken="a" endtoken=" =">
+                    <token key="pp.host" value="app.host = ${user.app.host}" />
+                    <token key="pp.path" value="app.path = ${user.app.path}" />
+                </replacetokens>
+
+                <replacetokens begintoken="d" endtoken=" =">
+                    <token key="b.host" value="db.host = ${user.db.host}"/>
+                    <token key="b.name"     value="db.name = ${user.db.name}"/>
+                    <token key="b.password" value="db.password = ${user.db.password}" />
+                    <token key="b.user"     value="db.user = ${user.db.user}"/>
+                </replacetokens>
+            </filterchain>
+        </copy>
+    </target>
+
+    <target name="check-composer-binary">
+        <available file="${project.basedir}/composer.phar" property="composer.binary.present"/>
+    </target>
+
+    <target name="install-composer-binary" depends="check-composer-binary"  unless="composer.binary.present">
+        <exec executable="bash" checkreturn="true">
+            <arg value="-c" />
+            <arg value="curl -s http://getcomposer.org/installer | php" />
+        </exec>
+    </target>
+
+    <target name="update-composer-binary" depends="install-composer-binary">
+        <exec executable="php">
+            <arg value="composer.phar" />
+            <arg value="self-update" />
+            <arg value="--no-interaction" />
+        </exec>
+    </target>
+
+    <target name="build-composer-install" depends="update-composer-binary">
+        <exec executable="php" checkreturn="true">
+            <arg value="composer.phar" />
+            <arg value="install" />
+            <arg value="--no-interaction" />
+            <arg value="--optimize-autoloader" />
+        </exec>
+    </target>
+
+    <target name="build-composer-update" depends="update-composer-binary">
+        <exec executable="php" checkreturn="true">
+            <arg value="composer.phar" />
+            <arg value="update" />
+            <arg value="--no-interaction" />
+        </exec>
+    </target>
+
+    <target name="build-database">
+        <concat destfile="${build.dir}/scripts/deploy.template.sql">
+            <filelist dir="${build.dir}/" files="scripts/deploy.create.sql" />
+            <filelist dir="${sql.dir}/" files="install/latest.sql" />
+            <filelist dir="${build.dir}/" files="scripts/deploy.shopconfig.sql" />
+        </concat>
+
+        <copy file="${build.dir}/scripts/deploy.template.sql" tofile="${build.dir}/scripts/deploy.sql" overwrite="true">
+            <filterchain>
+                <replacetokens begintoken="@" endtoken="@">
+                    <token key="database" value="${db.name}"/>
+                    <token key="host" value="${app.host}"/>
+                    <token key="path" value="${app.path}"/>
+                </replacetokens>
+            </filterchain>
+        </copy>
+
+        <pdosqlexec src="${build.dir}/scripts/deploy.sql" url="mysql:host=${db.host}" userid="${db.user}" password="${db.password}" />
+
+        <delete file="${build.dir}/scripts/deploy.template.sql"/>
+        <delete file="${build.dir}/scripts/deploy.sql"/>
+
+        <phingcall target="build-database-deploy"/>
+        <phingcall target="build-demodata-deploy"/>
+    </target>
+
+    <target name="build-demodata-deploy">
+        <php function="dirname" returnProperty="demoDataDir">
+            <param value="${demo.data}" />
+        </php>
+
+        <php function="basename" returnProperty="demoDataFile">
+            <param value="${demo.data}" />
+        </php>
+
+        <concat destfile="${build.dir}/scripts/demo.template.sql">
+            <filelist dir="${demoDataDir}" files="${demoDataFile}" />
+            <filelist dir="${build.dir}/" files="scripts/deploy.shopconfig.sql" />
+        </concat>
+
+        <copy file="${build.dir}/scripts/demo.template.sql" tofile="${build.dir}/scripts/demo.deploy.sql" overwrite="true">
+            <filterchain>
+                <replacetokens begintoken="@" endtoken="@">
+                    <token key="database" value="${db.name}"/>
+                    <token key="host" value="${app.host}"/>
+                    <token key="path" value="${app.path}"/>
+                </replacetokens>
+            </filterchain>
+        </copy>
+
+        <pdosqlexec encoding="utf8" src="${build.dir}/scripts/demo.deploy.sql" url="mysql:host=${db.host};dbname=${db.name}" userid="${db.user}" password="${db.password}" />
+
+        <delete file="${build.dir}/scripts/demo.template.sql"/>
+        <delete file="${build.dir}/scripts/demo.deploy.sql"/>
+    </target>
+
+    <target name="build-database-deploy">
+        <exec executable="php" checkreturn="true">
+            <arg value="${build.dir}/ApplyDeltas.php"/>
+            <arg value="--password=${db.password}"/>
+            <arg value="--host=${db.host}"/>
+            <arg value="--username=${db.user}"/>
+            <arg value="--dbname=${db.name}"/>
+        </exec>
+    </target>
+
+    <target name="build-generate-attributes">
+        <exec executable="php" dir="${project.basedir}/bin" checkreturn="true">
+            <arg line="console sw:generate:attributes"/>
+        </exec>
+    </target>
+
+    <target name="build-snippets-deploy" depends="build-generate-attributes">
+        <exec executable="php" dir="${project.basedir}/bin" checkreturn="true">
+            <arg line="console sw:snippets:to:db --include-plugins"/>
+        </exec>
+    </target>
+
+    <target name="build-theme-initialize" depends="build-generate-attributes">
+        <exec executable="php" dir="${project.basedir}/bin" checkreturn="true">
+            <arg line="console sw:theme:initialize"/>
+        </exec>
+    </target>
+
+    <target name="build-disable-firstrunwizard">
+        <exec executable="php" dir="${project.basedir}/bin" checkreturn="true">
+            <arg line="console sw:firstrunwizard:disable"/>
+        </exec>
+    </target>
+
+    <target name="build-install-lock-file">
+        <tstamp>
+            <format property="installDate" pattern="yyyyMMddHHmm" />
+        </tstamp>
+
+        <echo file="${project.basedir}/recovery/install/data/install.lock">${installDate}</echo>
+    </target>
+
+    <target name="build-cache-dir">
+        <exec executable="chmod" os="Linux">
+            <arg value="0777"/>
+            <arg value="${cache.dir}/"/>
+        </exec>
+
+        <delete includeemptydirs="true">
+            <fileset dir="${cache.dir}">
+                <include name="**/*"/>
+                <exclude name=".htaccess"/>
+                <exclude name="clear_cache.sh"/>
+            </fileset>
+
+            <fileset dir="${test.dir.shopware}/TempFiles/">
+                <include name="**/*"/>
+                <exclude name=".gitkeep"/>
+            </fileset>
+        </delete>
+    </target>
+
+    <target name="build-config">
+        <copy file="${project.basedir}/config.php.dist" tofile="${project.basedir}/config.php" overwrite="true">
+            <filterchain>
+            <replacetokens begintoken="%" endtoken="%">
+                <token key="db.database" value="${db.name}"/>
+                <token key="db.host"     value="${db.host}"/>
+                <token key="db.user"     value="${db.user}"/>
+                <token key="db.password" value="${db.password}"/>
+                <token key="db.port"     value=""/>
+            </replacetokens>
+            </filterchain>
+        </copy>
+    </target>
+
+    <target name="build-log-dir">
+        <delete includeemptydirs="true">
+            <fileset dir="${log.dir}">
+                <include name="**/*.*"/>
+                <exclude name=".htaccess"/>
+                <exclude name=".gitkeep"/>
+            </fileset>
+        </delete>
+        <mkdir dir="${log.dir}/"/>
+    </target>
+
+    <target name="unit-shopware" depends="build-unit">
+        <exec executable="${script.phpunit}" checkreturn="false" dir="${test.dir.shopware}">
+            <arg value="--log-junit=${log.dir}/junit.xml"/>
+            <arg value="--coverage-clover=${log.dir}/clover.xml"/>
+            <arg value="--coverage-html=${log.dir}/coverage"/>
+        </exec>
+    </target>
+
+    <target name="unit-shopware-continuous" depends="build-unit">
+        <exec executable="${script.phpunit}" checkreturn="true" dir="${test.dir.shopware}">
+            <arg value="--log-junit=${log.dir}/junit.xml"/>
+        </exec>
+    </target>
+
+    <target name="start-server">
+        <exec executable="${script.server.start}" >
+            <arg value="${app.host}"/>
+        </exec>
+    </target>
+
+    <target name="stop-server">
+        <exec executable="${script.server.stop}" />
+    </target>
+
+    <target name="mink-shopware-continuous">
+        <exec executable="${script.behat}" dir="${test.dir}/Mink">
+            <env key="MINK_EXTENSION_PARAMS" value="base_url=http://${app.host}${app.path}"/>
+            <arg value="--no-ansi"/>
+            <arg value="--profile=emotion"/>
+            <arg value="--format=pretty,junit,html"/>
+            <arg value="--out=,${log.dir}/mink,${log.dir}/mink-report.html"/>
+        </exec>
+    </target>
+
+    <target name="mink-shopware-continuous-responsive">
+        <exec executable="${script.behat}" dir="${test.dir}/Mink">
+            <env key="MINK_EXTENSION_PARAMS" value="base_url=http://${app.host}${app.path}"/>
+            <arg value="--no-ansi"/>
+            <arg value="--profile=responsive"/>
+            <arg value="--format=pretty,junit,html"/>
+            <arg value="--out=,${log.dir}/mink,${log.dir}/mink-report.html"/>
+        </exec>
+    </target>
+
+    <target name="test-static" depends="build-log-dir">
+        <phingcall target="static-lint"/>
+        <phingcall target="static-phpcs"/>
+        <phingcall target="static-phpmd"/>
+        <phingcall target="static-phpcpd"/>
+        <phingcall target="static-phploc"/>
+        <phingcall target="static-pdepend"/>
+    </target>
+
+    <target name="static-lint" description="Perform syntax check of sourcecode files">
+        <exec executable="bash" checkreturn="true">
+            <arg value="-c" />
+            <arg value="find -L ${project.basedir}/engine/Shopware/ -name '*.php' -print0 | xargs -0 -n 1 -P 4 php -l" />
+        </exec>
+    </target>
+
+    <target name="static-phpcs" description="PHP CodeSniffer">
+        <exec executable="phpcs" output="/dev/null" checkreturn="false">
+            <arg value="--standard=${build.dir}"/>
+            <arg value="--report=checkstyle"/>
+            <arg value="--report-file=${log.dir}/checkstyle.xml"/>
+            <arg value="--extensions=php" />
+            <arg value="-n" />
+            <arg value="${app.dir}/"/>
+        </exec>
+    </target>
+
+    <target name="static-phpmd" description="PHP Mess Detector">
+        <exec executable="phpmd" checkreturn="false" error="${log.dir}/error.log">
+            <arg value="${app.dir}/"/>
+            <arg value="xml"/>
+            <arg value="codesize,design,unusedcode"/>
+            <arg value="--reportfile"/>
+            <arg value="${log.dir}/pmd.xml"/>
+        </exec>
+    </target>
+
+    <target name="static-phpcpd" description="PHP Copy/Paste Detector">
+        <exec executable="phpcpd" checkreturn="false" output="/dev/null" error="${log.dir}/error.log">
+            <arg value="--log-pmd"/>
+            <arg value="${log.dir}/cpd.xml"/>
+            <arg value="${app.dir}/"/>
+        </exec>
+    </target>
+
+    <target name="static-phploc" description="PHP Lines of Code">
+        <exec executable="phploc" checkreturn="false" output="${log.dir}/loc.txt" error="${log.dir}/error.log">
+            <arg value="--log-xml"/>
+            <arg value="${log.dir}/loc.xml"/>
+            <arg value="--log-csv"/>
+            <arg value="${log.dir}/loc.csv"/>
+            <arg value="--count-tests"/>
+            <arg value="${app.dir}/"/>
+        </exec>
+    </target>
+
+    <target name="static-pdepend">
+        <mkdir dir="${log.dir}/depend"/>
+        <exec executable="pdepend" checkreturn="false" output="${log.dir}/depend/output.txt" error="${log.dir}/error.log" dir="${app.dir}">
+            <arg value="--summary-xml=${log.dir}/depend/summary.xml"/>
+            <arg value="--jdepend-chart=${log.dir}/depend/jdepend.svg"/>
+            <arg value="--overview-pyramid=${log.dir}/depend/pyramid.svg"/>
+            <arg value="${app.dir}"/>
+        </exec>
+    </target>
+
+    <target name="build-phpcb" description="Build CodeBrowser">
+        <exec executable="phpcb" checkreturn="false" output="/dev/null" error="${log.dir}/error.log">
+            <arg value="-l${log.dir}"/>
+            <arg value="-o${log.dir}/code-browser"/>
+            <arg value="-s${app.dir}"/>
+        </exec>
+    </target>
+
+    <!--
+        Installation of sass/compass on Debian/Ubuntu
+
+        sudo aptitude install rubygems
+        sudo gem update
+        sudo gem install sass
+        sudo gem install compass
+    -->
+    <target name="compile-extjs">
+        <exec executable="compass" dir="${project.basedir}/themes/Backend/ExtJs/backend/_resources">
+            <arg value="compile"/>
+            <arg value="--force"/>
+            <arg value="resources/sass/"/>
+        </exec>
+    </target>
+
+    <target name="watch-extjs">
+        <exec executable="compass" dir="${project.basedir}/themes/Backend/ExtJs/backend/_resources">
+            <arg value="watch"/>
+            <arg value="resources/sass/"/>
+        </exec>
+    </target>
+
+    <target name="compile-tinymce" description="Builds a TinyMce package with default used plugins">
+        <!-- Combine all files -->
+        <concat destfile="${project.basedir}/engine/Library/TinyMce/tiny_mce_full.js">
+            <filelist dir="${project.basedir}/engine/Library/TinyMce/" files="tiny_mce.js,themes/advanced/langs/en.js,themes/advanced/langs/de.js,plugins/media_selection/editor_plugin.js,plugins/fullscreen/editor_plugin.js" />
+        </concat>
+    </target>
+</project>
