@@ -38,7 +38,7 @@
 
         /**
          * Install the module first?
-         * @var bool
+         * @var bool|void
          */
         protected $install = null;
 
@@ -59,6 +59,12 @@
          * @var string
          */
         protected $taskName = 'controlSWPlugin';
+
+        /**
+         * Update the plugin?
+         * @var bool|void
+         */
+        protected $update = null;
 
         /**
          * Creates a child property.
@@ -118,6 +124,15 @@
         } // function
 
         /**
+         * Is Update?
+         * @return boolean|void
+         */
+        public function isUpdate()
+        {
+            return $this->update;
+        } // function
+
+        /**
          * Controlling the plugin.
          * @throws \BuildException
          */
@@ -155,6 +170,24 @@
 
                 if ($return) {
                     $msg = sprintf('Problem white activating/deactivating the plugin "%s": %s', $plugin, implode("n", $output));
+
+                    if ($this->isIgnore()) {
+                        $this->log($msg, \Project::MSG_WARN);
+                    } else {
+                        throw new \BuildException($msg);
+                    } // else
+                } // if
+            } // if
+
+            if (!is_null($update = $this->isUpdate())) {
+                $this->log('Updating plugin: ' . $plugin);
+
+                list($output, $return) = $this->clu2cli(
+                    'sw:plugin:update ' . escapeshellarg($plugin)
+                );
+
+                if ($return) {
+                    $msg = sprintf('Problem white updating the plugin "%s": %s', $plugin, implode("n", $output));
 
                     if ($this->isIgnore()) {
                         $this->log($msg, \Project::MSG_WARN);
@@ -260,5 +293,14 @@
         public function setPlugin($plugin)
         {
             $this->plugin = $plugin;
+        } // function
+
+        /**
+         * Update plugin?
+         * @param bool $update
+         */
+        public function setUpdate($update)
+        {
+            $this->update = $update;
         } // function
     } // class
