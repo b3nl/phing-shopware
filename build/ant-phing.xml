@@ -12,9 +12,13 @@
     <target name="build" depends="build-daily"/>
 
     <target name="build-daily" depends="build-log-dir">
-        <phingcall target="test-unit"/>
-        <phingcall target="test-static"/>
-        <phingcall target="build-phpcb"/>
+        <parallel>
+            <phingcall target="test-unit"/>
+            <phingcall target="test-static"/>
+        </parallel>
+        <parallel>
+            <phingcall target="build-phpcb"/>
+        </parallel>
     </target>
 
     <target name="build-continuous" depends="unit-shopware-continuous"/>
@@ -278,12 +282,14 @@
     </target>
 
     <target name="test-static" depends="build-log-dir">
-        <phingcall target="static-lint"/>
-        <phingcall target="static-phpcs"/>
-        <phingcall target="static-phpmd"/>
-        <phingcall target="static-phpcpd"/>
-        <phingcall target="static-phploc"/>
-        <phingcall target="static-pdepend"/>
+        <parallel>
+            <phingcall target="static-lint"/>
+            <phingcall target="static-phpcs"/>
+            <phingcall target="static-phpmd"/>
+            <phingcall target="static-phpcpd"/>
+            <phingcall target="static-phploc"/>
+            <phingcall target="static-pdepend"/>
+        </parallel>
     </target>
 
     <target name="static-lint" description="Perform syntax check of sourcecode files">
