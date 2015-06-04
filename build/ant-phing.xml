@@ -65,7 +65,7 @@
     <target name="install-composer-binary" depends="check-composer-binary"  unless="composer.binary.present">
         <exec executable="bash" checkreturn="true">
             <arg value="-c" />
-            <arg value="curl -s http://getcomposer.org/installer | php" />
+            <arg value="curl -s https://getcomposer.org/installer | php" />
         </exec>
     </target>
 
@@ -252,7 +252,7 @@
     </target>
 
     <target name="start-server">
-        <exec executable="${script.server.start}" >
+        <exec executable="${script.server.start}" checkreturn="true">
             <arg value="${app.host}"/>
         </exec>
     </target>
