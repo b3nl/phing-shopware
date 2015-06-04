@@ -24,7 +24,7 @@
          * The SW Component to install the system.
          * @var null|\Shopware\Recovery\Install\Database
          */
-        protected $installSWApp = null;
+        private $installSWApp = null;
 
         /**
          * Returns a reference to current project
