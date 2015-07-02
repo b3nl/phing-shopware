@@ -225,12 +225,11 @@
                     } // if
 
                     $name  = $value->getName();
-
-                    if ($name === 'dependencies') {
-                        continue;
-                    } // if
-
                     $value = $value->getValue();
+                } // if
+
+                if ($name === 'dependencies') {
+                    continue;
                 } // if
 
                 $this->log('Setting plugin-property: ' . $plugin . ' - ' . $name);
