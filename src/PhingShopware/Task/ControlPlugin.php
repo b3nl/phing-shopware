@@ -225,6 +225,11 @@
                     } // if
 
                     $name  = $value->getName();
+
+                    if ($name === 'dependencies') {
+                        continue;
+                    } // if
+
                     $value = $value->getValue();
                 } // if
 
