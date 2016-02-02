@@ -31,7 +31,20 @@
          */
         public function main()
         {
-            exec('bash ' . SW_PATH . '/cache/clear_cache.sh', $output, $return);
+
+            $actualCwd = getcwd();
+
+            // Switch for new shopware versions.
+            $clearScript = SW_PATH . '/cache/clear_cache.sh';
+
+            if (!file_exists($clearScript)) {
+                $clearScript = SW_PATH . '/var/cache/clear_cache.sh';
+            } // if
+
+            // Prevent problems, so siwtch the working problems.
+            chdir(dirname(realpath($clearScript)));
+            exec('bash ' . basename($clearScript), $output, $return);
+            chdir($actualCwd);
 
             if (!$return) {
                 $this->log('Cache cleared', \Project::MSG_INFO);
